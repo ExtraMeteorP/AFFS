@@ -6,6 +6,8 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IChatComponent;
 
@@ -35,39 +37,62 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory {
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int index) {
-		if (index >= getSizeInventory())
-			return null;
-		return content[index];
-	}
+    public ItemStack getStackInSlot(int slotIndex)
+    {
+        return content[slotIndex];
+    }
 
-	@Override
-	public ItemStack decrStackSize(int index, int count) {
-		if (index >= getSizeInventory())
-			return null;
-		ItemStack is = getStackInSlot(index);
-		if (is.stackSize > count)
-		{
-			is.stackSize -= count;
-		}
-		else if (is.stackSize <= count)
-		{
-			is = null;
-		}
-		return is;
-	}
+    @Override
+    public ItemStack decrStackSize(int slotIndex, int decrementAmount)
+    {
+        ItemStack itemStack = getStackInSlot(slotIndex);
+        if (itemStack != null)
+        {
+            if (itemStack.stackSize <= decrementAmount)
+            {
+                setInventorySlotContents(slotIndex, null);
+            }
+            else
+            {
+                itemStack = itemStack.splitStack(decrementAmount);
+                if (itemStack.stackSize == 0)
+                {
+                    setInventorySlotContents(slotIndex, null);
+                }
+            }
+        }
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int index) {
-		return getStackInSlot(index);
-	}
+        return itemStack;
+    }
 
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
-		if (index >= getSizeInventory())
-			return;
-		content[index] = stack;
-	}
+    @Override
+    public ItemStack getStackInSlotOnClosing(int slotIndex)
+    {
+        if (content[slotIndex] != null)
+        {
+            ItemStack itemStack = content[slotIndex];
+            content[slotIndex] = null;
+            return itemStack;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public void setInventorySlotContents(int slotIndex, ItemStack itemStack)
+    {
+    	content[slotIndex] = itemStack;
+
+        if (itemStack != null && itemStack.stackSize > this.getInventoryStackLimit())
+        {
+            itemStack.stackSize = this.getInventoryStackLimit();
+        }
+
+
+        this.markDirty();
+    }
 
 	@Override
 	public int getInventoryStackLimit() {
@@ -124,5 +149,40 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory {
 	@Override
 	public void clear() {
 		
+	}
+	
+	public void writeToNBT(NBTTagCompound nbt)
+	{
+		super.writeToNBT(nbt);
+		
+		NBTTagList tagList = new NBTTagList();
+        for (int currentIndex = 0; currentIndex < content.length; ++currentIndex)
+        {
+            if (content[currentIndex] != null)
+            {
+                NBTTagCompound tagCompound = new NBTTagCompound();
+                tagCompound.setByte("Slot", (byte) currentIndex);
+                content[currentIndex].writeToNBT(tagCompound);
+                tagList.appendTag(tagCompound);
+            }
+        }
+        nbt.setTag("InventoryContent", tagList);
+	}
+	
+	public void readFromNBT(NBTTagCompound nbt)
+	{
+		super.readFromNBT(nbt);
+		
+		NBTTagList tagList = nbt.getTagList("InventoryContent", 10);
+		content = new ItemStack[this.getSizeInventory()];
+        for (int i = 0; i < tagList.tagCount(); ++i)
+        {
+            NBTTagCompound tagCompound = tagList.getCompoundTagAt(i);
+            byte slotIndex = tagCompound.getByte("Slot");
+            if (slotIndex >= 0 && slotIndex < content.length)
+            {
+            	content[slotIndex] = ItemStack.loadItemStackFromNBT(tagCompound);
+            }
+        }
 	}
 }

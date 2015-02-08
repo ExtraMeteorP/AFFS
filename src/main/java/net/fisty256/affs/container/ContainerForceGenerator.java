@@ -19,11 +19,11 @@ public class ContainerForceGenerator extends Container {
 		this.playerInv = player.inventory;
 		this.te = te;
 		
-		addSlotToContainer(new Slot((IInventory) te, 0, 0, 0));
-		addSlotToContainer(new Slot((IInventory) te, 1, 0, 50));
-		addSlotToContainer(new Slot((IInventory) te, 2, 0, 100));
+		addSlotToContainer(new Slot((IInventory) te, 0, 11, 54));
+		addSlotToContainer(new Slot((IInventory) te, 1, 11, 18));
+		addSlotToContainer(new Slot((IInventory) te, 2, 144, 36));
 		
-		addPlayerSlotsToContainer(playerInv, 0, 150);
+		addPlayerSlotsToContainer(playerInv, 8, 84);
 	}
 	
 	@Override
