@@ -1,0 +1,25 @@
+package net.fisty256.affs.init;
+
+import net.fisty256.affs.item.ItemLinkCard;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+public class BlocksAFFS {
+	
+	public static Item link_card;
+	
+	public void init()
+	{
+		link_card = new ItemLinkCard().setUnlocalizedName("link_card");
+	}
+	
+	public void register()
+	{
+		GameRegistry.registerBlock(link_card, "")
+	}
+	
+	public void registerTextures()
+	{
+		
+	}
+}

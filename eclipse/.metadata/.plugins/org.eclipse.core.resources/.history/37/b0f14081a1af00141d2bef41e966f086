@@ -1,0 +1,23 @@
+package net.fisty256.affs.init;
+
+public class BlocksAFFS {
+	public static void init()
+	{
+		
+	}
+	
+	public static void register()
+	{
+		
+	}
+	
+	public static void registerTextures()
+	{
+		
+	}
+	
+	private static void registerTexture(Block block)
+	{
+		
+	}
+}

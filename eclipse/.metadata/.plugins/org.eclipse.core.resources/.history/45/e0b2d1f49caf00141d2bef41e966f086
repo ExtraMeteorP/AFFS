@@ -1,0 +1,23 @@
+package net.fisty256.affs.init;
+
+import net.minecraft.item.Item;
+
+public class BlocksAFFS {
+	
+	public static Item linkCard;
+	
+	public void init()
+	{
+		linkCard = 
+	}
+	
+	public void register()
+	{
+		
+	}
+	
+	public void registerTextures()
+	{
+		
+	}
+}

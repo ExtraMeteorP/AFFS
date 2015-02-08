@@ -1,0 +1,8 @@
+package net.fisty256.affs.init;
+
+public class BlocksAFFS {
+	public void init()
+	{
+		
+	}
+}
