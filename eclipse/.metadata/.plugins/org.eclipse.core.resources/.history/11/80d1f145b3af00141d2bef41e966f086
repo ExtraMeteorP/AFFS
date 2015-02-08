@@ -1,7 +1,0 @@
-package net.fisty256.affs.gui;
-
-import net.minecraft.client.gui.inventory.GuiContainer;
-
-public class GuiForceGenerator extends GuiContainer {
-	
-}

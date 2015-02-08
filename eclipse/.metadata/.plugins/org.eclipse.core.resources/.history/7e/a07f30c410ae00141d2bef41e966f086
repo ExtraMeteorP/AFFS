@@ -1,9 +1,0 @@
-package net.fisty256.affs;
-
-import net.fisty256.affs.reference.ModReferences;
-import net.minecraftforge.fml.common.Mod;
-
-@Mod(modid = ModReferences.MODID, version = ModReferences.VERSION)
-public class AFFS {
-	public void preInit()
-}

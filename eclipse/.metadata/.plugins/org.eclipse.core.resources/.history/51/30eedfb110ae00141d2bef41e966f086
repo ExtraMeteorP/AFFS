@@ -1,8 +1,0 @@
-package net.fisty256.affs;
-
-import net.minecraftforge.fml.common.Mod;
-
-@Mod(modid = ExampleMod.MODID, version = ExampleMod.VERSION)
-public class AFFS {
-	
-}

@@ -1,7 +1,0 @@
-package net.fisty256.affs.container;
-
-import net.minecraft.inventory.Container;
-
-public class ContainerForceGenerator extends Container {
-	
-}

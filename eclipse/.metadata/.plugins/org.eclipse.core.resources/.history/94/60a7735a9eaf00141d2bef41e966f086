@@ -1,8 +1,0 @@
-package net.fisty256.affs.proxy;
-
-public class ClientProxy extends CommonProxy {
-	public void registerRenders()
-	{
-		
-	}
-}
