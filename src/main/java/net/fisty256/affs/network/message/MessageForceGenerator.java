@@ -18,11 +18,6 @@ public class MessageForceGenerator implements IMessage, IMessageHandler<MessageF
 	private int upgradeBurnTime = 0;
 	private int upgradeStrength = 0;
 	
-	public MessageForceGenerator()
-	{
-		
-	}
-	
 	public MessageForceGenerator(TileEntityForceGenerator te)
 	{
 		x = te.getPos().getX();
@@ -38,7 +33,6 @@ public class MessageForceGenerator implements IMessage, IMessageHandler<MessageF
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		System.out.println(forceStored);
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();

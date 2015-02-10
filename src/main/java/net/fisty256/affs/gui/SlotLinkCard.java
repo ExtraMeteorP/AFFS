@@ -15,4 +15,9 @@ public class SlotLinkCard extends Slot {
 	{
 		return item.getItem() == ItemsAFFS.link_card;
 	}
+	
+	public int getSlotStackLimit()
+    {
+        return 1;
+    }
 }

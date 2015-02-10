@@ -3,6 +3,7 @@ package net.fisty256.affs.block;
 import java.util.Random;
 
 import net.fisty256.affs.AFFS;
+import net.fisty256.affs.forceenergy.ForceDB;
 import net.fisty256.affs.reference.GUIReferences;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
 import net.minecraft.block.Block;
@@ -53,6 +54,8 @@ public class BlockForceGenerator extends BlockContainer {
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         dropInventory(worldIn, pos.getX(), pos.getY(), pos.getZ());
+        TileEntityForceGenerator te = (TileEntityForceGenerator)worldIn.getTileEntity(pos);
+        ForceDB.destroySource(te.storageID);
         super.breakBlock(worldIn, pos, state);
     }
 	

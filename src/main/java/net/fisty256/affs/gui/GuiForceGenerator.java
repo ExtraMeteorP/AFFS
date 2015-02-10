@@ -1,5 +1,7 @@
 package net.fisty256.affs.gui;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 import net.fisty256.affs.container.ContainerForceGenerator;
 import net.fisty256.affs.reference.ModReferences;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
@@ -24,7 +26,8 @@ public class GuiForceGenerator extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		mc.getTextureManager().bindTexture(backgroundTexture);
-		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, 176, 166);
+		
+		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, 176, 166); //Draw background
 		
 		this.fontRendererObj.drawString("Link Card", guiLeft+100, guiTop+65, 4210752);
 		

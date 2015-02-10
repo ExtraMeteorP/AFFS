@@ -1,5 +1,6 @@
 package net.fisty256.affs.tileentity;
 
+import net.fisty256.affs.forceenergy.ForceDB;
 import net.fisty256.affs.init.ItemsAFFS;
 import net.fisty256.affs.network.PacketHandler;
 import net.fisty256.affs.network.message.MessageForceGenerator;
@@ -14,6 +15,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
@@ -27,11 +29,15 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 	public int burnTime = 0;
 	public int upgradeBurnTime = 0;
 	public int upgradeStrength = 0;
+	public int storageID = -1;
 	
 	private boolean sendUpdate = false;
 	private int slowdownTimer = 0;
 	private int slowdownTimerMax = 10;
+	private int slowdownLinker = 0;
+	private int slowdownLinkerMax = 20;
 	private boolean endInfoSent = false;
+	private int syncTimer = 0;
 	
 	private int SLOT_FUEL = 0;
 	private int SLOT_UPGRADE = 1;
@@ -44,6 +50,44 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 	{
 		if (!worldObj.isRemote) //Server side
 		{
+			syncTimer++;
+			if (syncTimer >= 100)
+			{
+				syncTimer = 0;
+				sendUpdate = true;
+			}
+			
+			if (storageID == -1)
+			{
+				storageID = ForceDB.addRandomSource(0);
+				if (storageID == -1) {
+					System.out.println("Force generator at X: " + this.getPos().getX() + " Y: " + this.getPos().getY() + " Z: " + this.getPos().getZ() + " is missing ID! Check if you have not reached the maximum limit, if you did you can ever increase it in the config! (default 200)");
+					return;
+				}
+				ForceDB.setSource(storageID, forceStored);
+			}
+			
+			slowdownLinker++;
+			if (slowdownLinker >= slowdownLinkerMax && getStackInSlot(SLOT_LINKCARD) != null && getStackInSlot(SLOT_LINKCARD).getItem() == ItemsAFFS.link_card)
+			{
+				slowdownLinker = 0;
+				ItemStack is = getStackInSlot(SLOT_LINKCARD);
+				if (is.getTagCompound() == null)
+				{
+					is.setTagCompound(new NBTTagCompound());
+				}
+				NBTTagCompound nbt = is.getTagCompound();
+				nbt.setInteger("LinkID", storageID);
+				nbt.setInteger("BlockX", this.getPos().getX());
+				nbt.setInteger("BlockY", this.getPos().getY());
+				nbt.setInteger("BlockZ", this.getPos().getZ());
+				is.setStackDisplayName(EnumChatFormatting.GOLD + "Link Card - Linked");
+			}
+			else if (slowdownLinker >= slowdownLinkerMax)
+			{
+				slowdownLinker = 0;
+			}
+			
 			if (burnTime > 0)
 			{
 				endInfoSent = false;
@@ -84,6 +128,8 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 					}
 				}
 				
+				ForceDB.setSource(storageID, forceStored);
+				
 				burnTime--;
 				sendUpdate = true;
 			}
@@ -104,25 +150,37 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 							sendUpdate = true;
 						}
 					}
+					else if (!endInfoSent)
+					{
+						forcePt = 0;
+						endInfoSent = true;
+						sendUpdate = true;
+					}
 				}
 				else if (!endInfoSent)
 				{
+					forcePt = 0;
 					endInfoSent = true;
 					sendUpdate = true;
 				}
 			}
             
-			slowdownTimer++;
-            if (sendUpdate && slowdownTimer >= slowdownTimerMax) //Send packet to the client twice a second telling it progress
-            {
-            	this.markDirty();
-    			PacketHandler.INSTANCE.sendToAllAround(new MessageForceGenerator(this), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(),
-    					(double) this.getPos().getX(), (double) this.getPos().getY(), (double) this.getPos().getZ(), 128d));
-                this.worldObj.notifyBlockOfStateChange(new BlockPos((double) this.getPos().getX(), (double) this.getPos().getY(), (double) this.getPos().getZ()), this.getBlockType());
-                sendUpdate = false;
-                slowdownTimer = 0;
-            }
+			sendUpdate();
 		}
+	}
+	
+	public void sendUpdate()
+	{
+		slowdownTimer++;
+        if (sendUpdate && slowdownTimer >= slowdownTimerMax) //Send packet to the client at most twice a second telling it progress
+        {
+        	this.markDirty();
+			PacketHandler.INSTANCE.sendToAllAround(new MessageForceGenerator(this), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(),
+					(double) this.getPos().getX(), (double) this.getPos().getY(), (double) this.getPos().getZ(), 128d));
+            this.worldObj.notifyBlockOfStateChange(new BlockPos((double) this.getPos().getX(), (double) this.getPos().getY(), (double) this.getPos().getZ()), this.getBlockType());
+            sendUpdate = false;
+            slowdownTimer = 0;
+        }
 	}
 	
 	@Override
@@ -281,6 +339,7 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
         nbt.setInteger("BurnTime", burnTime);
         nbt.setInteger("UpgradeBurnTime", upgradeBurnTime);
         nbt.setInteger("UpgradeStrength", upgradeStrength);
+        nbt.setInteger("StorageID", storageID);
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt)
@@ -303,6 +362,7 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
         burnTime = nbt.getInteger("BurnTime");
         upgradeBurnTime = nbt.getInteger("UpgradeBurnTime");
         upgradeStrength = nbt.getInteger("UpgradeStrength");
+        storageID = nbt.getInteger("StorageID");
 	}
 	
 	@Override
