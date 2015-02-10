@@ -1,6 +1,8 @@
 package net.fisty256.affs.tileentity;
 
 import net.fisty256.affs.init.ItemsAFFS;
+import net.fisty256.affs.network.PacketHandler;
+import net.fisty256.affs.network.message.MessageForceGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
@@ -8,13 +10,120 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.Packet;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-public class TileEntityForceGenerator extends TileEntity implements IInventory {
+public class TileEntityForceGenerator extends TileEntity implements IInventory, IUpdatePlayerListBox {
 
 	public Container container;
 	protected ItemStack[] content = new ItemStack[3];
+	
+	public int forceStored = 0;
+	public int forcePt = 0;
+	public int burnTime = 0;
+	public int upgradeBurnTime = 0;
+	public int upgradeStrength = 0;
+	
+	private boolean sendUpdate = false;
+	private int slowdownTimer = 0;
+	private int slowdownTimerMax = 10;
+	private boolean endInfoSent = false;
+	
+	private int SLOT_FUEL = 0;
+	private int SLOT_UPGRADE = 1;
+	private int SLOT_LINKCARD = 2;
+	
+	private int BURN_TIME_FULL = 400;
+	private int MAX_BUFFER = 1000000;
+	
+	public void update()
+	{
+		if (!worldObj.isRemote) //Server side
+		{
+			if (burnTime > 0)
+			{
+				endInfoSent = false;
+				
+				forcePt = 50;
+				
+				if (upgradeBurnTime <= 0)
+				{
+					upgradeStrength = 0;
+					if (getStackInSlot(SLOT_UPGRADE) != null)
+					{
+						if (getStackInSlot(SLOT_UPGRADE).getItem() == Items.redstone)
+						{
+							decrStackSize(SLOT_UPGRADE, 1);
+							upgradeStrength = 70;
+							upgradeBurnTime = 400;
+						}
+						else if (getStackInSlot(SLOT_UPGRADE).getItem() == Items.glowstone_dust)
+						{
+							decrStackSize(SLOT_UPGRADE, 1);
+							upgradeStrength = 180;
+							upgradeBurnTime = 400;
+						}
+					}
+				}
+				else
+				{
+					upgradeBurnTime--;
+				}
+				forcePt += upgradeStrength;
+				
+				if (forceStored < MAX_BUFFER)
+				{
+					forceStored += forcePt;
+					if (forceStored > MAX_BUFFER)
+					{
+						forceStored = MAX_BUFFER;
+					}
+				}
+				
+				burnTime--;
+				sendUpdate = true;
+			}
+			else
+			{
+				if (forceStored < MAX_BUFFER)
+				{
+					if (getStackInSlot(SLOT_FUEL) != null)
+					{
+						if (getStackInSlot(SLOT_FUEL).getItem() == Items.coal)
+						{
+							decrStackSize(SLOT_FUEL, 1);
+							burnTime += BURN_TIME_FULL;
+						}
+						else
+						{
+							forcePt = 0;
+							sendUpdate = true;
+						}
+					}
+				}
+				else if (!endInfoSent)
+				{
+					endInfoSent = true;
+					sendUpdate = true;
+				}
+			}
+            
+			slowdownTimer++;
+            if (sendUpdate && slowdownTimer >= slowdownTimerMax) //Send packet to the client twice a second telling it progress
+            {
+            	this.markDirty();
+    			PacketHandler.INSTANCE.sendToAllAround(new MessageForceGenerator(this), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(),
+    					(double) this.getPos().getX(), (double) this.getPos().getY(), (double) this.getPos().getZ(), 128d));
+                this.worldObj.notifyBlockOfStateChange(new BlockPos((double) this.getPos().getX(), (double) this.getPos().getY(), (double) this.getPos().getZ()), this.getBlockType());
+                sendUpdate = false;
+                slowdownTimer = 0;
+            }
+		}
+	}
 	
 	@Override
 	public String getName() {
@@ -167,6 +276,11 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory {
             }
         }
         nbt.setTag("InventoryContent", tagList);
+        
+        nbt.setInteger("ForceStored", forceStored);
+        nbt.setInteger("BurnTime", burnTime);
+        nbt.setInteger("UpgradeBurnTime", upgradeBurnTime);
+        nbt.setInteger("UpgradeStrength", upgradeStrength);
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt)
@@ -184,5 +298,16 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory {
             	content[slotIndex] = ItemStack.loadItemStackFromNBT(tagCompound);
             }
         }
+        
+        forceStored = nbt.getInteger("ForceStored");
+        burnTime = nbt.getInteger("BurnTime");
+        upgradeBurnTime = nbt.getInteger("UpgradeBurnTime");
+        upgradeStrength = nbt.getInteger("UpgradeStrength");
+	}
+	
+	@Override
+	public Packet getDescriptionPacket()
+	{
+		return PacketHandler.INSTANCE.getPacketFrom(new MessageForceGenerator(this));
 	}
 }

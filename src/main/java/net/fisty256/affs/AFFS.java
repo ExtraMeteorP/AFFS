@@ -2,6 +2,7 @@ package net.fisty256.affs;
 
 import net.fisty256.affs.init.BlocksAFFS;
 import net.fisty256.affs.init.ItemsAFFS;
+import net.fisty256.affs.network.PacketHandler;
 import net.fisty256.affs.proxy.CommonProxy;
 import net.fisty256.affs.reference.ModReferences;
 import net.fisty256.affs.reference.ProxyReferences;
@@ -37,6 +38,8 @@ public class AFFS {
 	public void init(FMLInitializationEvent event)
 	{
 		proxy.registerRenders();
+		
+		PacketHandler.init();
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 		

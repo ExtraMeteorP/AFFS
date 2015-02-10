@@ -1,5 +1,8 @@
 package net.fisty256.affs.container;
 
+import net.fisty256.affs.gui.SlotFuel;
+import net.fisty256.affs.gui.SlotGeneratorSpeeder;
+import net.fisty256.affs.gui.SlotLinkCard;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -19,9 +22,9 @@ public class ContainerForceGenerator extends Container {
 		this.playerInv = player.inventory;
 		this.te = te;
 		
-		addSlotToContainer(new Slot((IInventory) te, 0, 11, 54));
-		addSlotToContainer(new Slot((IInventory) te, 1, 11, 18));
-		addSlotToContainer(new Slot((IInventory) te, 2, 144, 36));
+		addSlotToContainer(new SlotFuel((IInventory) te, 0, 11, 54));
+		addSlotToContainer(new SlotGeneratorSpeeder((IInventory) te, 1, 11, 18));
+		addSlotToContainer(new SlotLinkCard((IInventory) te, 2, 151, 61));
 		
 		addPlayerSlotsToContainer(playerInv, 8, 84);
 	}
