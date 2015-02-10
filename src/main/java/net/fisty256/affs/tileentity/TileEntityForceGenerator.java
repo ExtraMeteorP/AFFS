@@ -30,6 +30,7 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 	public int upgradeBurnTime = 0;
 	public int upgradeStrength = 0;
 	public int storageID = -1;
+	public boolean turnedOn = false;
 	
 	private boolean sendUpdate = false;
 	private int slowdownTimer = 0;
@@ -88,65 +89,72 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 				slowdownLinker = 0;
 			}
 			
-			if (burnTime > 0)
+			if (turnedOn)
 			{
-				endInfoSent = false;
-				
-				forcePt = 50;
-				
-				if (upgradeBurnTime <= 0)
+				if (burnTime > 0)
 				{
-					upgradeStrength = 0;
-					if (getStackInSlot(SLOT_UPGRADE) != null)
+					endInfoSent = false;
+					
+					forcePt = 50;
+					
+					if (upgradeBurnTime <= 0)
 					{
-						if (getStackInSlot(SLOT_UPGRADE).getItem() == Items.redstone)
+						upgradeStrength = 0;
+						if (getStackInSlot(SLOT_UPGRADE) != null)
 						{
-							decrStackSize(SLOT_UPGRADE, 1);
-							upgradeStrength = 70;
-							upgradeBurnTime = 400;
-						}
-						else if (getStackInSlot(SLOT_UPGRADE).getItem() == Items.glowstone_dust)
-						{
-							decrStackSize(SLOT_UPGRADE, 1);
-							upgradeStrength = 180;
-							upgradeBurnTime = 400;
+							if (getStackInSlot(SLOT_UPGRADE).getItem() == Items.redstone)
+							{
+								decrStackSize(SLOT_UPGRADE, 1);
+								upgradeStrength = 70;
+								upgradeBurnTime = 400;
+							}
+							else if (getStackInSlot(SLOT_UPGRADE).getItem() == Items.glowstone_dust)
+							{
+								decrStackSize(SLOT_UPGRADE, 1);
+								upgradeStrength = 180;
+								upgradeBurnTime = 400;
+							}
 						}
 					}
+					else
+					{
+						upgradeBurnTime--;
+					}
+					forcePt += upgradeStrength;
+					
+					if (forceStored < MAX_BUFFER)
+					{
+						forceStored += forcePt;
+						if (forceStored > MAX_BUFFER)
+						{
+							forceStored = MAX_BUFFER;
+						}
+					}
+					
+					ForceDB.setSource(storageID, forceStored);
+					sendUpdate = true;
 				}
 				else
 				{
-					upgradeBurnTime--;
-				}
-				forcePt += upgradeStrength;
-				
-				if (forceStored < MAX_BUFFER)
-				{
-					forceStored += forcePt;
-					if (forceStored > MAX_BUFFER)
+					if (forceStored < MAX_BUFFER)
 					{
-						forceStored = MAX_BUFFER;
-					}
-				}
-				
-				ForceDB.setSource(storageID, forceStored);
-				
-				burnTime--;
-				sendUpdate = true;
-			}
-			else
-			{
-				if (forceStored < MAX_BUFFER)
-				{
-					if (getStackInSlot(SLOT_FUEL) != null)
-					{
-						if (getStackInSlot(SLOT_FUEL).getItem() == Items.coal)
+						if (getStackInSlot(SLOT_FUEL) != null)
 						{
-							decrStackSize(SLOT_FUEL, 1);
-							burnTime += BURN_TIME_FULL;
+							if (getStackInSlot(SLOT_FUEL).getItem() == Items.coal)
+							{
+								decrStackSize(SLOT_FUEL, 1);
+								burnTime += BURN_TIME_FULL;
+							}
+							else
+							{
+								forcePt = 0;
+								sendUpdate = true;
+							}
 						}
-						else
+						else if (!endInfoSent)
 						{
 							forcePt = 0;
+							endInfoSent = true;
 							sendUpdate = true;
 						}
 					}
@@ -157,14 +165,13 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 						sendUpdate = true;
 					}
 				}
-				else if (!endInfoSent)
-				{
-					forcePt = 0;
-					endInfoSent = true;
-					sendUpdate = true;
-				}
 			}
             
+			if (burnTime > 0)
+			{
+				burnTime--;
+			}
+			
 			sendUpdate();
 		}
 	}
@@ -181,6 +188,15 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
             sendUpdate = false;
             slowdownTimer = 0;
         }
+	}
+	
+	public void buttonEvent(int buttonID)
+	{
+		if (buttonID == 0)
+		{
+			turnedOn = !turnedOn;
+		}
+		sendUpdate = true;
 	}
 	
 	@Override
@@ -340,6 +356,8 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
         nbt.setInteger("UpgradeBurnTime", upgradeBurnTime);
         nbt.setInteger("UpgradeStrength", upgradeStrength);
         nbt.setInteger("StorageID", storageID);
+        
+        nbt.setBoolean("TurnedOn", turnedOn);
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt)
@@ -363,6 +381,8 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
         upgradeBurnTime = nbt.getInteger("UpgradeBurnTime");
         upgradeStrength = nbt.getInteger("UpgradeStrength");
         storageID = nbt.getInteger("StorageID");
+        
+        turnedOn = nbt.getBoolean("TurnedOn");
 	}
 	
 	@Override

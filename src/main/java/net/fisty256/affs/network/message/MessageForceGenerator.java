@@ -17,6 +17,7 @@ public class MessageForceGenerator implements IMessage, IMessageHandler<MessageF
 	private int burnTime = 0;
 	private int upgradeBurnTime = 0;
 	private int upgradeStrength = 0;
+	private boolean turnedOn = false;
 	
 	public MessageForceGenerator()
 	{
@@ -33,6 +34,7 @@ public class MessageForceGenerator implements IMessage, IMessageHandler<MessageF
 		burnTime = te.burnTime;
 		upgradeBurnTime = te.upgradeBurnTime;
 		upgradeStrength = te.upgradeStrength;
+		turnedOn = te.turnedOn;
 	}
 	
 	@Override
@@ -46,12 +48,12 @@ public class MessageForceGenerator implements IMessage, IMessageHandler<MessageF
 		burnTime = buf.readInt();
 		upgradeBurnTime = buf.readInt();
 		upgradeStrength = buf.readInt();
+		turnedOn = buf.readBoolean();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		System.out.println(forceStored);
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
@@ -60,6 +62,7 @@ public class MessageForceGenerator implements IMessage, IMessageHandler<MessageF
 		buf.writeInt(burnTime);
 		buf.writeInt(upgradeBurnTime);
 		buf.writeInt(upgradeStrength);
+		buf.writeBoolean(turnedOn);
 	}
 
 	@Override
@@ -76,6 +79,7 @@ public class MessageForceGenerator implements IMessage, IMessageHandler<MessageF
 			tf.burnTime = msg.burnTime;
 			tf.upgradeBurnTime = msg.upgradeBurnTime;
 			tf.upgradeStrength = msg.upgradeStrength;
+			tf.turnedOn = msg.turnedOn;
 		}
 		
 		return null;
