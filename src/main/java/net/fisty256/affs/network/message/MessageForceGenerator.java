@@ -18,6 +18,11 @@ public class MessageForceGenerator implements IMessage, IMessageHandler<MessageF
 	private int upgradeBurnTime = 0;
 	private int upgradeStrength = 0;
 	
+	public MessageForceGenerator()
+	{
+		
+	}
+	
 	public MessageForceGenerator(TileEntityForceGenerator te)
 	{
 		x = te.getPos().getX();
