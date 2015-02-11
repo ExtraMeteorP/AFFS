@@ -28,7 +28,7 @@ public class ClientProxy extends CommonProxy {
 			if (te instanceof TileEntityForceGenerator)
 			{
 				TileEntityForceGenerator fe = (TileEntityForceGenerator)te;
-				return new GuiForceGenerator(new ContainerForceGenerator(player, fe), fe);
+				return new GuiForceGenerator(new ContainerForceGenerator(player, fe), fe, player);
 			}
 		}
 		return null;

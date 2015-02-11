@@ -21,16 +21,22 @@ public class GuiForceGenerator extends InventoryEffectRenderer {
 	
 	private TileEntityForceGenerator te;
 	
-	public GuiForceGenerator(Container container, TileEntityForceGenerator te) {
+	private EntityPlayer player;
+	
+	public GuiForceGenerator(Container container, TileEntityForceGenerator te, EntityPlayer player)
+	{
 		super(container);
 		
 		this.te = te;
+		
+		this.player = player;
 		
 		this.backgroundTexture = new ResourceLocation(ModReferences.MODID + ":textures/gui/force_generator.png");
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+	{
 		mc.getTextureManager().bindTexture(backgroundTexture);
 		
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, 176, 166); //Draw background
@@ -61,7 +67,8 @@ public class GuiForceGenerator extends InventoryEffectRenderer {
 		this.buttonList.add(new GuiButton(0, guiLeft+35, guiTop+60, 60, 20, ""));
 	}
 	
-	protected void actionPerformed(GuiButton guibutton) {
-        PacketHandler.INSTANCE.sendToServer(new MessageForceGeneratorButton(te.getPos(), guibutton.id));
+	protected void actionPerformed(GuiButton guibutton)
+	{
+        PacketHandler.INSTANCE.sendToServer(new MessageForceGeneratorButton(te.getPos(), player.dimension, guibutton.id));
 	}
 }

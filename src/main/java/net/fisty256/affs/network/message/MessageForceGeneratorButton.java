@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class MessageForceGeneratorButton implements IMessage, IMessageHandler<MessageForceGeneratorButton, IMessage> {
 	int x, y, z;
+	int dim;
 	int button;
 	
 	public MessageForceGeneratorButton()
@@ -18,17 +19,19 @@ public class MessageForceGeneratorButton implements IMessage, IMessageHandler<Me
 		
 	}
 	
-	public MessageForceGeneratorButton(BlockPos pos, int btn)
+	public MessageForceGeneratorButton(BlockPos pos, int dim, int btn)
 	{
 		x = pos.getX();
 		y = pos.getY();
 		z = pos.getZ();
+		this.dim = dim;
 		button = btn;
 	}
 	
 	@Override
-	public IMessage onMessage(MessageForceGeneratorButton msg, MessageContext ctx) {
-		TileEntity te = FMLClientHandler.instance().getServer().worldServerForDimension(0).getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
+	public IMessage onMessage(MessageForceGeneratorButton msg, MessageContext ctx)
+	{
+		TileEntity te = FMLClientHandler.instance().getServer().worldServerForDimension(msg.dim).getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
 		
 		if (te instanceof TileEntityForceGenerator)
 		{
@@ -40,18 +43,22 @@ public class MessageForceGeneratorButton implements IMessage, IMessageHandler<Me
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(ByteBuf buf)
+	{
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
+		dim = buf.readInt();
 		button = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(ByteBuf buf)
+	{
 		buf.writeInt(x);
 		buf.writeInt(y);
 		buf.writeInt(z);
+		buf.writeInt(dim);
 		buf.writeInt(button);
 	}
 	
