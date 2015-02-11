@@ -22,7 +22,7 @@ group= "net.fisty256.affs" // http://maven.apache.org/guides/mini/guide-naming-c
 archivesBaseName = "affs"
 
 minecraft {
-    version = "1.8-11.14.1.1306"
+    version = "1.8-11.14.1.1309"
     runDir = "eclipse"
     
     // the mappings can be changed at any time, and must be in the following format.
