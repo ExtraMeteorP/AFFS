@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.fisty256.affs.AFFS;
 import net.fisty256.affs.forceenergy.ForceDB;
+import net.fisty256.affs.init.BlocksAFFS;
 import net.fisty256.affs.reference.GUIReferences;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
 import net.minecraft.block.Block;
@@ -24,6 +25,8 @@ public class BlockForceGenerator extends BlockContainer {
 	public BlockForceGenerator(Material materialIn)
 	{
 		super(materialIn);
+		this.setHardness(8f);
+		this.setResistance(1000f);
 	}
 
 	@Override
