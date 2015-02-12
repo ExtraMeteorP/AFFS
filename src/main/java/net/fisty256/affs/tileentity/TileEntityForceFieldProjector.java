@@ -1,5 +1,8 @@
 package net.fisty256.affs.tileentity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.fisty256.affs.forceenergy.ForceDB;
 import net.fisty256.affs.init.BlocksAFFS;
 import net.fisty256.affs.init.ItemsAFFS;
@@ -28,10 +31,21 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 	
 	public int client_forceAmount = 0;
 	
+	public boolean isRunning = false;
 	public int mode = 0;
+	
 	public int forcefieldX = 0;
 	public int forcefieldY = 0;
 	public int forcefieldZ = 0;
+	public int n, s, w, e, u, d;
+	
+	public int[] originalPositionsX;
+	public int[] originalPositionsY;
+	public int[] originalPositionsZ;
+	
+	public int[] positionsX;
+	public int[] positionsY;
+	public int[] positionsZ;
 	
 	private int oldForceSent = 0;
 	
@@ -49,10 +63,12 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 		}
 	}
 	
+	int syncTimer = 0;
+	
 	public void updateHead()
 	{
 		syncTimer++;
-		if (syncTimer >= 100)
+		if (syncTimer >= 20)
 		{
 			syncTimer = 0;
 			sendUpdate = true;
@@ -62,21 +78,117 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 		{
 			sendUpdate = true;
 		}
+		
+		if (this.worldObj.isBlockPowered(new BlockPos(this.getPos())))
+		{
+			this.isRunning = true;
+		}
+		else
+		{
+			this.isRunning = false;
+		}
 	}
 	
 	public void updateBody()
 	{
-		
+		if (isRunning)
+		{
+			if (positionsX != null)
+			{
+				tryPlaceBlocks();
+			}
+		}
+		else
+		{
+			if (positionsX != null)
+			{
+				removePlacedBlocks();
+			}
+		}
 	}
 	
-	int syncTimer = 0;
-	int slowdownTimer = 0;
-	int slowdownTimerMax = 20;
+	private void tryPlaceBlocks()
+	{
+		for (int i = 0; i < positionsX.length; i++)
+		{
+			BlockPos pos = new BlockPos(getPos().getX()+forcefieldX+positionsX[i], getPos().getY()+forcefieldY+positionsY[i], getPos().getZ()+forcefieldZ+positionsZ[i]);
+			if (this.worldObj.isAirBlock(pos))
+				this.worldObj.setBlockState(pos, BlocksAFFS.force_field.getDefaultState());
+		}
+	}
+	
+	private void removePlacedBlocks()
+	{
+		for (int i = 0; i < originalPositionsX.length; i++)
+		{
+			BlockPos pos = new BlockPos(getPos().getX()+forcefieldX+originalPositionsX[i], getPos().getY()+forcefieldY+originalPositionsY[i], getPos().getZ()+forcefieldZ+originalPositionsZ[i]);
+			if (this.worldObj.getBlockState(pos).getBlock() == BlocksAFFS.force_field)
+				this.worldObj.setBlockToAir(pos);
+		}
+	}
+	
+	private void calculateBlocks()
+	{
+		List<Integer> posX = new ArrayList<Integer>();
+		List<Integer> posY = new ArrayList<Integer>();
+		List<Integer> posZ = new ArrayList<Integer>();
+		
+		int west = w - (2*w);
+		int north = n - (2*n);
+		int down = d - (2*d);
+		for (int x = west; x < e+1; x++)
+		{
+			for (int y = down; y < u+1; y++)
+			{
+				for (int z = north; z < s+1; z++)
+				{
+					if (mode == 0)
+					{
+						if (x == west | x == e | z == north | z == s | y == down | y == u)
+						{
+							posX.add(x);
+							posY.add(y);
+							posZ.add(z);
+						}
+					}
+					else if (mode == 1)
+					{
+						if (x == west | x == e | z == north | z == s)
+						{
+							posX.add(x);
+							posY.add(y);
+							posZ.add(z);
+						}
+					}
+				}
+			}
+		}
+		
+		originalPositionsX = new int[posX.size()];
+		for (int i = 0; i < posX.size(); i++)
+		{
+			originalPositionsX[i] = posX.get(i);
+		}
+		originalPositionsY = new int[posY.size()];
+		for (int i = 0; i < posY.size(); i++)
+		{
+			originalPositionsY[i] = posY.get(i);
+		}
+		originalPositionsZ = new int[posZ.size()];
+		for (int i = 0; i < posZ.size(); i++)
+		{
+			originalPositionsZ[i] = posZ.get(i);
+		}
+		positionsX = originalPositionsX;
+		positionsY = originalPositionsY;
+		positionsZ = originalPositionsZ;
+	}
+	
 	boolean sendUpdate = false;
+	
 	public void sendUpdate()
 	{
-		slowdownTimer++;
-        if (sendUpdate && slowdownTimer >= slowdownTimerMax)
+        if (sendUpdate)
         {
         	oldForceSent = getForceAmount();
         	
@@ -85,50 +197,112 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 					(double) this.getPos().getX(), (double) this.getPos().getY(), (double) this.getPos().getZ(), 128d));
             this.worldObj.notifyBlockOfStateChange(new BlockPos((double) this.getPos().getX(), (double) this.getPos().getY(), (double) this.getPos().getZ()), this.getBlockType());
             sendUpdate = false;
-            slowdownTimer = 0;
         }
 	}
 	
 	public void buttonEvent(int buttonID)
 	{
-		this.worldObj.setBlockToAir(new BlockPos(this.getPos().getX()+forcefieldX, this.getPos().getY()+forcefieldY+1, this.getPos().getZ()+forcefieldZ));
 		if (buttonID == 0) //Mode
 		{
 			mode++;
 			if (mode > 1)
 				mode = 0;
+			calculateBlocks();
 		}
-		else if (buttonID == 1) //Position X++
+		else if (!isRunning && buttonID >= 1 && buttonID <= 18)
 		{
-			if (forcefieldX < 50)
-				forcefieldX++;
+			if (buttonID == 1) //Position X++
+			{
+				if (forcefieldX < 50)
+					forcefieldX++;
+			}
+			else if (buttonID == 2) //Position X--
+			{
+				if (forcefieldX > -50)
+					forcefieldX--;
+			}
+			else if (buttonID == 3) //Position Y++
+			{
+				if (forcefieldY < 50)
+					forcefieldY++;
+			}
+			else if (buttonID == 4) //Position Y--
+			{
+				if (forcefieldY > -50)
+					forcefieldY--;
+			}
+			else if (buttonID == 5) //Position Z++
+			{
+				if (forcefieldZ < 50)
+					forcefieldZ++;
+			}
+			else if (buttonID == 6) //Position Z--
+			{
+				if (forcefieldZ > -50)
+					forcefieldZ--;
+			}
+			else if (buttonID == 7) //Size N++
+			{
+				if (n < 50)
+					n++;
+			}
+			else if (buttonID == 8) //Size N--
+			{
+				if (n > 0)
+					n--;
+			}
+			else if (buttonID == 9) //Size S++
+			{
+				if (s < 50)
+					s++;
+			}
+			else if (buttonID == 10) //Size S--
+			{
+				if (s > 0)
+					s--;
+			}
+			else if (buttonID == 11) //Size W++
+			{
+				if (w < 50)
+					w++;
+			}
+			else if (buttonID == 12) //Size W--
+			{
+				if (w > 0)
+					w--;
+			}
+			else if (buttonID == 13) //Size E++
+			{
+				if (e < 50)
+					e++;
+			}
+			else if (buttonID == 14) //Size E--
+			{
+				if (e > 0)
+					e--;
+			}
+			else if (buttonID == 15) //Size U++
+			{
+				if (u < 50)
+					u++;
+			}
+			else if (buttonID == 16) //Size U--
+			{
+				if (u > 0)
+					u--;
+			}
+			else if (buttonID == 17) //Size D++
+			{
+				if (d < 50)
+					d++;
+			}
+			else if (buttonID == 18) //Size D--
+			{
+				if (d > 0)
+					d--;
+			}
+			calculateBlocks();
 		}
-		else if (buttonID == 2) //Position X--
-		{
-			if (forcefieldX > -50)
-				forcefieldX--;
-		}
-		else if (buttonID == 3) //Position Y++
-		{
-			if (forcefieldY < 50)
-				forcefieldY++;
-		}
-		else if (buttonID == 4) //Position Y--
-		{
-			if (forcefieldY > -50)
-				forcefieldY--;
-		}
-		else if (buttonID == 5) //Position Z++
-		{
-			if (forcefieldZ < 50)
-				forcefieldZ++;
-		}
-		else if (buttonID == 6) //Position Z--
-		{
-			if (forcefieldZ > -50)
-				forcefieldZ--;
-		}
-		this.worldObj.setBlockState(new BlockPos(this.getPos().getX()+forcefieldX, this.getPos().getY()+forcefieldY+1, this.getPos().getZ()+forcefieldZ), BlocksAFFS.force_field.getDefaultState());
 		sendUpdate = true;
 	}
 	
@@ -270,6 +444,23 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
             }
         }
         nbt.setTag("InventoryContent", tagList);
+        
+        nbt.setBoolean("IsRunning", isRunning);
+        nbt.setInteger("FposX", forcefieldX);
+        nbt.setInteger("FposY", forcefieldY);
+        nbt.setInteger("FposZ", forcefieldZ);
+        nbt.setIntArray("BlocksX", positionsX);
+        nbt.setIntArray("BlocksY", positionsY);
+        nbt.setIntArray("BlocksZ", positionsZ);
+        nbt.setIntArray("OrigBlocksX", originalPositionsX);
+        nbt.setIntArray("OrigBlocksY", originalPositionsY);
+        nbt.setIntArray("OrigBlocksZ", originalPositionsZ);
+        nbt.setInteger("n", n);
+        nbt.setInteger("s", s);
+        nbt.setInteger("w", w);
+        nbt.setInteger("e", e);
+        nbt.setInteger("u", u);
+        nbt.setInteger("d", d);
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt)
@@ -287,6 +478,23 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
             	content[slotIndex] = ItemStack.loadItemStackFromNBT(tagCompound);
             }
         }
+        
+        this.isRunning = nbt.getBoolean("IsRunning");
+        forcefieldX = nbt.getInteger("FposX");
+        forcefieldY = nbt.getInteger("FposY");
+        forcefieldZ = nbt.getInteger("FposZ");
+        positionsX = nbt.getIntArray("BlocksX");
+        positionsY = nbt.getIntArray("BlocksY");
+        positionsZ = nbt.getIntArray("BlocksZ");
+        originalPositionsX = nbt.getIntArray("OrigBlocksX");
+        originalPositionsY = nbt.getIntArray("OrigBlocksY");
+        originalPositionsZ = nbt.getIntArray("OrigBlocksZ");
+        n = nbt.getInteger("n");
+        s = nbt.getInteger("s");
+        w = nbt.getInteger("w");
+        e = nbt.getInteger("e");
+        u = nbt.getInteger("u");
+        d = nbt.getInteger("d");
 	}
 	
 	@Override

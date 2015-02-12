@@ -22,9 +22,9 @@ public class ContainerForceFieldProjector extends Container {
 		this.playerInv = player.inventory;
 		this.te = te;
 		
-		addSlotToContainer(new SlotLinkCard((IInventory) te, 0, 151, 61));
+		addSlotToContainer(new SlotLinkCard((IInventory) te, 0, 152, 120));
 		
-		addPlayerSlotsToContainer(playerInv, 8, 84);
+		addPlayerSlotsToContainer(playerInv, 8, 142);
 	}
 	
 	@Override

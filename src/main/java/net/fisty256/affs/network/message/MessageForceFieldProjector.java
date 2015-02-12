@@ -18,6 +18,8 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 	int forcefieldX = 0;
 	int forcefieldY = 0;
 	int forcefieldZ = 0;
+	boolean isRunning;
+	int n, s, w, e, u, d;
 	
 	public MessageForceFieldProjector()
 	{
@@ -34,6 +36,13 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 		forcefieldX = te.forcefieldX;
 		forcefieldY = te.forcefieldY;
 		forcefieldZ = te.forcefieldZ;
+		isRunning = te.isRunning;
+		n = te.n;
+		s = te.s;
+		w = te.w;
+		e = te.e;
+		u = te.u;
+		d = te.d;
 	}
 	
 	@Override
@@ -47,6 +56,13 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 		forcefieldX = buf.readInt();
 		forcefieldY = buf.readInt();
 		forcefieldZ = buf.readInt();
+		isRunning = buf.readBoolean();
+		n = buf.readInt();
+		s = buf.readInt();
+		w = buf.readInt();
+		e = buf.readInt();
+		u = buf.readInt();
+		d = buf.readInt();
 	}
 
 	@Override
@@ -60,6 +76,13 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 		buf.writeInt(forcefieldX);
 		buf.writeInt(forcefieldY);
 		buf.writeInt(forcefieldZ);
+		buf.writeBoolean(isRunning);
+		buf.writeInt(n);
+		buf.writeInt(s);
+		buf.writeInt(w);
+		buf.writeInt(e);
+		buf.writeInt(u);
+		buf.writeInt(d);
 	}
 	
 	@Override
@@ -76,6 +99,13 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 			tf.forcefieldX = msg.forcefieldX;
 			tf.forcefieldY = msg.forcefieldY;
 			tf.forcefieldZ = msg.forcefieldZ;
+			tf.isRunning = msg.isRunning;
+			tf.n = msg.n;
+			tf.s = msg.s;
+			tf.w = msg.w;
+			tf.e = msg.e;
+			tf.u = msg.u;
+			tf.d = msg.d;
 		}
 		
 		return null;
