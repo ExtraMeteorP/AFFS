@@ -47,6 +47,10 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 	private int BURN_TIME_FULL = 400;
 	private int MAX_BUFFER = 1000000;
 	
+	private int PT_DEFAULT = 100;
+	private int PT_REDSTONE = 150;
+	private int PT_GLOWSTONE = 320;
+	
 	public void update()
 	{
 		if (!worldObj.isRemote)
@@ -96,7 +100,7 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 				{
 					endInfoSent = false;
 					
-					forcePt = 50;
+					forcePt = PT_DEFAULT;
 					
 					if (upgradeBurnTime <= 0)
 					{
@@ -106,13 +110,13 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 							if (getStackInSlot(SLOT_UPGRADE).getItem() == Items.redstone)
 							{
 								decrStackSize(SLOT_UPGRADE, 1);
-								upgradeStrength = 70;
+								upgradeStrength = PT_REDSTONE;
 								upgradeBurnTime = 400;
 							}
 							else if (getStackInSlot(SLOT_UPGRADE).getItem() == Items.glowstone_dust)
 							{
 								decrStackSize(SLOT_UPGRADE, 1);
-								upgradeStrength = 180;
+								upgradeStrength = PT_GLOWSTONE;
 								upgradeBurnTime = 400;
 							}
 						}

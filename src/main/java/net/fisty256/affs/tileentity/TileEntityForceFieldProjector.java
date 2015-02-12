@@ -91,8 +91,9 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 	
 	public void updateBody()
 	{
-		if (isRunning)
+		if (isRunning && getForceAmount() >= positionsX.length)
 		{
+			decreaseForceAmount(positionsX.length);
 			if (positionsX != null)
 			{
 				tryPlaceBlocks();
@@ -186,10 +187,13 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 	
 	boolean sendUpdate = false;
 	
+	int slowdownCounter = 0;
 	public void sendUpdate()
 	{
-        if (sendUpdate)
+		slowdownCounter++;
+        if (sendUpdate && slowdownCounter >= 10)
         {
+        	slowdownCounter = 0;
         	oldForceSent = getForceAmount();
         	
         	this.markDirty();
