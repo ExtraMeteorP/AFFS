@@ -1,10 +1,12 @@
 package net.fisty256.affs.tileentity;
 
 import net.fisty256.affs.forceenergy.ForceDB;
+import net.fisty256.affs.init.BlocksAFFS;
 import net.fisty256.affs.init.ItemsAFFS;
 import net.fisty256.affs.network.PacketHandler;
 import net.fisty256.affs.network.message.MessageForceFieldProjector;
 import net.fisty256.affs.network.message.MessageForceGenerator;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
@@ -25,6 +27,11 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 	protected ItemStack[] content = new ItemStack[1];
 	
 	public int client_forceAmount = 0;
+	
+	public int mode = 0;
+	public int forcefieldX = 0;
+	public int forcefieldY = 0;
+	public int forcefieldZ = 0;
 	
 	private int oldForceSent = 0;
 	
@@ -84,6 +91,44 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 	
 	public void buttonEvent(int buttonID)
 	{
+		this.worldObj.setBlockToAir(new BlockPos(this.getPos().getX()+forcefieldX, this.getPos().getY()+forcefieldY+1, this.getPos().getZ()+forcefieldZ));
+		if (buttonID == 0) //Mode
+		{
+			mode++;
+			if (mode > 1)
+				mode = 0;
+		}
+		else if (buttonID == 1) //Position X++
+		{
+			if (forcefieldX < 50)
+				forcefieldX++;
+		}
+		else if (buttonID == 2) //Position X--
+		{
+			if (forcefieldX > -50)
+				forcefieldX--;
+		}
+		else if (buttonID == 3) //Position Y++
+		{
+			if (forcefieldY < 50)
+				forcefieldY++;
+		}
+		else if (buttonID == 4) //Position Y--
+		{
+			if (forcefieldY > -50)
+				forcefieldY--;
+		}
+		else if (buttonID == 5) //Position Z++
+		{
+			if (forcefieldZ < 50)
+				forcefieldZ++;
+		}
+		else if (buttonID == 6) //Position Z--
+		{
+			if (forcefieldZ > -50)
+				forcefieldZ--;
+		}
+		this.worldObj.setBlockState(new BlockPos(this.getPos().getX()+forcefieldX, this.getPos().getY()+forcefieldY+1, this.getPos().getZ()+forcefieldZ), BlocksAFFS.force_field.getDefaultState());
 		sendUpdate = true;
 	}
 	

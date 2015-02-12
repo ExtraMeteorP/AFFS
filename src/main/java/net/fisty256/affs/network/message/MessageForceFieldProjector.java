@@ -14,6 +14,10 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 
 	int x, y, z;
 	int force;
+	int mode;
+	int forcefieldX = 0;
+	int forcefieldY = 0;
+	int forcefieldZ = 0;
 	
 	public MessageForceFieldProjector()
 	{
@@ -26,6 +30,10 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 		y = te.getPos().getY();
 		z = te.getPos().getZ();
 		force = te.getForceAmount();
+		mode = te.mode;
+		forcefieldX = te.forcefieldX;
+		forcefieldY = te.forcefieldY;
+		forcefieldZ = te.forcefieldZ;
 	}
 	
 	@Override
@@ -35,6 +43,10 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 		y = buf.readInt();
 		z = buf.readInt();
 		force = buf.readInt();
+		mode = buf.readInt();
+		forcefieldX = buf.readInt();
+		forcefieldY = buf.readInt();
+		forcefieldZ = buf.readInt();
 	}
 
 	@Override
@@ -44,6 +56,10 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 		buf.writeInt(y);
 		buf.writeInt(z);
 		buf.writeInt(force);
+		buf.writeInt(mode);
+		buf.writeInt(forcefieldX);
+		buf.writeInt(forcefieldY);
+		buf.writeInt(forcefieldZ);
 	}
 	
 	@Override
@@ -56,6 +72,10 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 			TileEntityForceFieldProjector tf = (TileEntityForceFieldProjector)te;
 			
 			tf.client_forceAmount = msg.force;
+			tf.mode = msg.mode;
+			tf.forcefieldX = msg.forcefieldX;
+			tf.forcefieldY = msg.forcefieldY;
+			tf.forcefieldZ = msg.forcefieldZ;
 		}
 		
 		return null;

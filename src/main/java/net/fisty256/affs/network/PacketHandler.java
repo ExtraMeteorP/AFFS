@@ -1,6 +1,7 @@
 package net.fisty256.affs.network;
 
 import net.fisty256.affs.network.message.MessageForceFieldProjector;
+import net.fisty256.affs.network.message.MessageForceFieldProjectorButton;
 import net.fisty256.affs.network.message.MessageForceGenerator;
 import net.fisty256.affs.network.message.MessageForceGeneratorButton;
 import net.fisty256.affs.reference.ModReferences;
@@ -16,5 +17,6 @@ public class PacketHandler {
 		INSTANCE.registerMessage(MessageForceGenerator.class, MessageForceGenerator.class, 0, Side.CLIENT);
 		INSTANCE.registerMessage(MessageForceGeneratorButton.class, MessageForceGeneratorButton.class, 1, Side.SERVER);
 		INSTANCE.registerMessage(MessageForceFieldProjector.class, MessageForceFieldProjector.class, 2, Side.CLIENT);
+		INSTANCE.registerMessage(MessageForceFieldProjectorButton.class, MessageForceFieldProjectorButton.class, 3, Side.SERVER);
 	}
 }
