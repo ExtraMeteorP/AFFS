@@ -6,6 +6,7 @@ import net.fisty256.affs.network.PacketHandler;
 import net.fisty256.affs.proxy.CommonProxy;
 import net.fisty256.affs.reference.ModReferences;
 import net.fisty256.affs.reference.ProxyReferences;
+import net.fisty256.affs.tileentity.TileEntityForceCharger;
 import net.fisty256.affs.tileentity.TileEntityForceFieldProjector;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
 import net.minecraftforge.fml.common.Mod;
@@ -46,5 +47,6 @@ public class AFFS {
 		
 		GameRegistry.registerTileEntity(TileEntityForceGenerator.class, "TileEntityForceGenerator");
 		GameRegistry.registerTileEntity(TileEntityForceFieldProjector.class, "TileEntityForceFieldProjector");
+		GameRegistry.registerTileEntity(TileEntityForceCharger.class, "TileEntityForceCharger");
 	}
 }

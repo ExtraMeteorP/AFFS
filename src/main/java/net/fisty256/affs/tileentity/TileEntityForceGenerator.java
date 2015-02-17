@@ -304,19 +304,7 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		if (index == 0)
-		{
-			return stack.getItem() == Items.coal; //Only coal can be inserted in fuel slot
-		}
-		else if (index == 1)
-		{
-			return stack.getItem() == Items.redstone | stack.getItem() == Items.glowstone_dust; //Only redstone or glowstone dust can be inserted in upgrade slot
-		}
-		else if (index == 2)
-		{
-			return stack.getItem() == ItemsAFFS.link_card; //Only link cards are allowed in link card slot
-		}
-		return false;
+		return true;
 	}
 
 	@Override

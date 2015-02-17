@@ -1,12 +1,15 @@
 package net.fisty256.affs.proxy;
 
+import net.fisty256.affs.container.ContainerForceCharger;
 import net.fisty256.affs.container.ContainerForceFieldProjector;
 import net.fisty256.affs.container.ContainerForceGenerator;
+import net.fisty256.affs.gui.GuiForceCharger;
 import net.fisty256.affs.gui.GuiForceFieldProjector;
 import net.fisty256.affs.gui.GuiForceGenerator;
 import net.fisty256.affs.init.BlocksAFFS;
 import net.fisty256.affs.init.ItemsAFFS;
 import net.fisty256.affs.reference.GUIReferences;
+import net.fisty256.affs.tileentity.TileEntityForceCharger;
 import net.fisty256.affs.tileentity.TileEntityForceFieldProjector;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,6 +41,11 @@ public class ClientProxy extends CommonProxy {
 			{
 				TileEntityForceFieldProjector fe = (TileEntityForceFieldProjector)te;
 				return new GuiForceFieldProjector(new ContainerForceFieldProjector(player, fe), fe, player);
+			}
+			else if (ID == GUIReferences.ID_FORCE_CHARGER && te instanceof TileEntityForceCharger)
+			{
+				TileEntityForceCharger fe = (TileEntityForceCharger)te;
+				return new GuiForceCharger(new ContainerForceCharger(player, fe), fe, player);
 			}
 		}
 		return null;
