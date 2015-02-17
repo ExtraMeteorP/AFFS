@@ -2,6 +2,7 @@ package net.fisty256.affs.init;
 
 import com.sun.org.apache.xml.internal.security.signature.reference.ReferenceSubTreeData;
 
+import net.fisty256.affs.AFFS;
 import net.fisty256.affs.item.ItemInventoryCleaner;
 import net.fisty256.affs.item.ItemLinkCard;
 import net.fisty256.affs.reference.ModReferences;
@@ -17,8 +18,8 @@ public class ItemsAFFS {
 	
 	public static void init()
 	{
-		link_card = new ItemLinkCard().setUnlocalizedName("link_card");
-		inventory_cleaner = new ItemInventoryCleaner().setUnlocalizedName("inventory_cleaner");
+		link_card = new ItemLinkCard().setUnlocalizedName("link_card").setCreativeTab(AFFS.tab_affs);
+		inventory_cleaner = new ItemInventoryCleaner().setUnlocalizedName("inventory_cleaner").setCreativeTab(AFFS.tab_affs);
 	}
 	
 	public static void register()

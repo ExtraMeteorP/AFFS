@@ -1,5 +1,6 @@
 package net.fisty256.affs;
 
+import net.fisty256.affs.creativetabs.TabAFFS;
 import net.fisty256.affs.init.BlocksAFFS;
 import net.fisty256.affs.init.ItemsAFFS;
 import net.fisty256.affs.network.PacketHandler;
@@ -9,6 +10,7 @@ import net.fisty256.affs.reference.ProxyReferences;
 import net.fisty256.affs.tileentity.TileEntityForceCharger;
 import net.fisty256.affs.tileentity.TileEntityForceFieldProjector;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -21,6 +23,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class AFFS {
 	
 	public static AFFS instance;
+	
+	public static CreativeTabs tab_affs = new TabAFFS();
 	
 	@SidedProxy(clientSide = ProxyReferences.CLIENT_PROXY_CLASS, serverSide = ProxyReferences.SERVER_PROXY_CLASS)
 	public static CommonProxy proxy;

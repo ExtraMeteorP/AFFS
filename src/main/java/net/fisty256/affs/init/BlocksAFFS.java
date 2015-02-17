@@ -1,5 +1,6 @@
 package net.fisty256.affs.init;
 
+import net.fisty256.affs.AFFS;
 import net.fisty256.affs.block.BlockForceCharger;
 import net.fisty256.affs.block.BlockForceField;
 import net.fisty256.affs.block.BlockForceFieldProjector;
@@ -21,10 +22,10 @@ public class BlocksAFFS {
 	
 	public static void init()
 	{
-		force_generator = new BlockForceGenerator(Material.rock).setUnlocalizedName("force_generator");
-		force_field = new BlockForceField(Material.rock).setUnlocalizedName("force_field");
-		force_field_projector = new BlockForceFieldProjector(Material.rock).setUnlocalizedName("force_field_projector");
-		force_charger = new BlockForceCharger(Material.rock).setUnlocalizedName("force_charger");
+		force_generator = new BlockForceGenerator(Material.rock).setUnlocalizedName("force_generator").setCreativeTab(AFFS.tab_affs);
+		force_field = new BlockForceField(Material.rock).setUnlocalizedName("force_field").setCreativeTab(AFFS.tab_affs);
+		force_field_projector = new BlockForceFieldProjector(Material.rock).setUnlocalizedName("force_field_projector").setCreativeTab(AFFS.tab_affs);
+		force_charger = new BlockForceCharger(Material.rock).setUnlocalizedName("force_charger").setCreativeTab(AFFS.tab_affs);
 	}
 	
 	public static void register()
