@@ -1,9 +1,12 @@
 package net.fisty256.affs.proxy;
 
+import net.fisty256.affs.container.ContainerConfigurator;
 import net.fisty256.affs.container.ContainerForceCharger;
 import net.fisty256.affs.container.ContainerForceFieldProjector;
 import net.fisty256.affs.container.ContainerForceGenerator;
+import net.fisty256.affs.item.ItemInventoryCleaner;
 import net.fisty256.affs.reference.GUIReferences;
+import net.fisty256.affs.tileentity.TileEntityConfigurator;
 import net.fisty256.affs.tileentity.TileEntityForceCharger;
 import net.fisty256.affs.tileentity.TileEntityForceFieldProjector;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
@@ -23,27 +26,32 @@ public class CommonProxy implements IGuiHandler {
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-		if (te != null)
+		
+		if (ID == GUIReferences.ID_FORCE_GENERATOR && te instanceof TileEntityForceGenerator)
 		{
-			if (ID == GUIReferences.ID_FORCE_GENERATOR && te instanceof TileEntityForceGenerator)
-			{
-				TileEntityForceGenerator fe = (TileEntityForceGenerator)te;
-				fe.container = new ContainerForceGenerator(player, fe);
-				return fe.container;
-			}
-			else if (ID == GUIReferences.ID_FORCE_FIELD_PROJECTOR && te instanceof TileEntityForceFieldProjector)
-			{
-				TileEntityForceFieldProjector fe = (TileEntityForceFieldProjector)te;
-				fe.container = new ContainerForceFieldProjector(player, fe);
-				return fe.container;
-			}
-			else if (ID == GUIReferences.ID_FORCE_CHARGER && te instanceof TileEntityForceCharger)
-			{
-				TileEntityForceCharger fe = (TileEntityForceCharger)te;
-				fe.container = new ContainerForceCharger(player, fe);
-				return fe.container;
-			}
+			TileEntityForceGenerator fe = (TileEntityForceGenerator)te;
+			fe.container = new ContainerForceGenerator(player, fe);
+			return fe.container;
 		}
+		else if (ID == GUIReferences.ID_FORCE_FIELD_PROJECTOR && te instanceof TileEntityForceFieldProjector)
+		{
+			TileEntityForceFieldProjector fe = (TileEntityForceFieldProjector)te;
+			fe.container = new ContainerForceFieldProjector(player, fe);
+			return fe.container;
+		}
+		else if (ID == GUIReferences.ID_FORCE_CHARGER && te instanceof TileEntityForceCharger)
+		{
+			TileEntityForceCharger fe = (TileEntityForceCharger)te;
+			fe.container = new ContainerForceCharger(player, fe);
+			return fe.container;
+		}
+		else if (ID == GUIReferences.ID_CONFIGURATOR && te instanceof TileEntityConfigurator)
+		{
+			TileEntityConfigurator fe = (TileEntityConfigurator)te;
+			fe.container = new ContainerConfigurator(player, fe);
+			return fe.container;
+		}
+			
 		return null;
 	}
 

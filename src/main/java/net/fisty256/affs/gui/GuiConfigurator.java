@@ -1,22 +1,21 @@
 package net.fisty256.affs.gui;
 
 import net.fisty256.affs.reference.ModReferences;
+import net.fisty256.affs.tileentity.TileEntityConfigurator;
 import net.fisty256.affs.tileentity.TileEntityForceCharger;
-import net.fisty256.affs.tileentity.TileEntityForceFieldProjector;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiForceCharger extends GuiContainer {
+public class GuiConfigurator extends GuiContainer {
 	private final ResourceLocation backgroundTexture;
 	
-	private TileEntityForceCharger te;
+	private TileEntityConfigurator te;
 	
 	private EntityPlayer player;
 	
-	public GuiForceCharger(Container container, TileEntityForceCharger te, EntityPlayer player)
+	public GuiConfigurator(Container container, TileEntityConfigurator te, EntityPlayer player)
 	{
 		super(container);
 		
@@ -26,7 +25,7 @@ public class GuiForceCharger extends GuiContainer {
 		this.xSize = 176;
 		this.ySize = 223;
 		
-		this.backgroundTexture = new ResourceLocation(ModReferences.MODID + ":textures/gui/force_charger.png");
+		this.backgroundTexture = new ResourceLocation(ModReferences.MODID + ":textures/gui/configurator.png");
 	}
 
 	@Override

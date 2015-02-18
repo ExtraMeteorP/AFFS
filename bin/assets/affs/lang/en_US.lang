@@ -5,5 +5,6 @@ tile.force_generator.name=Force Generator
 tile.force_field.name=Force Field
 tile.force_field_projector.name=Force Field Projector
 tile.force_charger.name=Force Charger
+tile.configurator.name=Configurator
 
 itemGroup.tab_affs=AFFS

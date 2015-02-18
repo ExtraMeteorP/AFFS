@@ -1,6 +1,7 @@
 package net.fisty256.affs.init;
 
 import net.fisty256.affs.AFFS;
+import net.fisty256.affs.block.BlockConfigurator;
 import net.fisty256.affs.block.BlockForceCharger;
 import net.fisty256.affs.block.BlockForceField;
 import net.fisty256.affs.block.BlockForceFieldProjector;
@@ -19,6 +20,7 @@ public class BlocksAFFS {
 	public static Block force_field;
 	public static Block force_field_projector;
 	public static Block force_charger;
+	public static Block configurator;
 	
 	public static void init()
 	{
@@ -26,6 +28,7 @@ public class BlocksAFFS {
 		force_field = new BlockForceField(Material.rock).setUnlocalizedName("force_field").setCreativeTab(AFFS.tab_affs);
 		force_field_projector = new BlockForceFieldProjector(Material.rock).setUnlocalizedName("force_field_projector").setCreativeTab(AFFS.tab_affs);
 		force_charger = new BlockForceCharger(Material.rock).setUnlocalizedName("force_charger").setCreativeTab(AFFS.tab_affs);
+		configurator = new BlockConfigurator(Material.rock).setUnlocalizedName("configurator").setCreativeTab(AFFS.tab_affs);
 	}
 	
 	public static void register()
@@ -34,6 +37,7 @@ public class BlocksAFFS {
 		GameRegistry.registerBlock(force_field, force_field.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(force_field_projector, force_field_projector.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(force_charger, force_charger.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(configurator, configurator.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerTextures()
@@ -42,6 +46,7 @@ public class BlocksAFFS {
 		registerTexture(force_field);
 		registerTexture(force_field_projector);
 		registerTexture(force_charger);
+		registerTexture(configurator);
 	}
 	
 	private static void registerTexture(Block block)

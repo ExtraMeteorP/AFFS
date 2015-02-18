@@ -10,7 +10,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemEnergyStorage extends Item {
+public class ItemEnergyStorage extends ItemConfigurable {
 	
 	public ItemEnergyStorage()
 	{
