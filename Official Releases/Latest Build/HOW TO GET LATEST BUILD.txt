@@ -1,0 +1,14 @@
+To get the latest build you'll have to compile the source code manually. It takes some time and that's exactly why I'm not releasing stable builds all the time.
+
+Watch video tutorial! https://www.youtube.com/watch?v=1o_Mcgjk3a4
+
+or just read it..
+	1) Install Java Development Kit (may work without it, try and you'll see)
+	2) Create new folder (anywhere), open it
+	3) Download the source code (https://github.com/fisty256/AFFS/archive/master.zip)
+	4) Extract source code into the folder
+	5) Hold Shift and Right-click in the folder, click "Open command window here"
+	6) Type "gradlew build"
+	7) After about one minute the process should be completed, you can find the mod in build/libs
+
+If you have any problems compiling the source code, tweet me @Fisty256!
