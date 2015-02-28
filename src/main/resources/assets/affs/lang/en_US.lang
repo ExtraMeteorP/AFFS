@@ -1,10 +1,21 @@
 item.link_card.name=Link Card
 item.inventory_cleaner.name=Inventory Cleaner
+item.chip.name=Chip
+item.force_floodlight.name=Force Floodlight
+item.force_inductor_component.name=Force Inductor Component
+item.ingot_colorium.name=Colorium Ingot
+item.ingot_steel.name=Steel Ingot
+item.ingot_iron_triple.name=Triple Iron Ingot
+item.ingot_steel_triple.name=Triple Steel Ingot
+item.wireless_force_component.name=Wireless Force Component
+item.advanced_wireless_force_component.name=Advanced Wireless Force Component
 
 tile.force_generator.name=Force Generator
 tile.force_field.name=Force Field
 tile.force_field_projector.name=Force Field Projector
 tile.force_charger.name=Force Charger
 tile.configurator.name=Configurator
+tile.iron_casing.name=Iron Casing
+tile.steel_casing.name=Steel Casing
 
 itemGroup.tab_affs=AFFS

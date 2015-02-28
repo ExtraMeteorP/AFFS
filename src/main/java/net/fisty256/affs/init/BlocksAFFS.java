@@ -6,6 +6,8 @@ import net.fisty256.affs.block.BlockForceCharger;
 import net.fisty256.affs.block.BlockForceField;
 import net.fisty256.affs.block.BlockForceFieldProjector;
 import net.fisty256.affs.block.BlockForceGenerator;
+import net.fisty256.affs.block.BlockIron;
+import net.fisty256.affs.block.BlockSteel;
 import net.fisty256.affs.reference.ModReferences;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -22,6 +24,8 @@ public class BlocksAFFS {
 	public static Block force_charger;
 	public static Block configurator;
 	
+	public static Block iron_casing, steel_casing;
+	
 	public static void init()
 	{
 		force_generator = new BlockForceGenerator(Material.rock).setUnlocalizedName("force_generator").setCreativeTab(AFFS.tab_affs);
@@ -29,6 +33,8 @@ public class BlocksAFFS {
 		force_field_projector = new BlockForceFieldProjector(Material.rock).setUnlocalizedName("force_field_projector").setCreativeTab(AFFS.tab_affs);
 		force_charger = new BlockForceCharger(Material.rock).setUnlocalizedName("force_charger").setCreativeTab(AFFS.tab_affs);
 		configurator = new BlockConfigurator(Material.rock).setUnlocalizedName("configurator").setCreativeTab(AFFS.tab_affs);
+		iron_casing = new BlockIron().setUnlocalizedName("iron_casing").setCreativeTab(AFFS.tab_affs);
+		steel_casing = new BlockSteel().setUnlocalizedName("steel_casing").setCreativeTab(AFFS.tab_affs);
 	}
 	
 	public static void register()
@@ -38,6 +44,8 @@ public class BlocksAFFS {
 		GameRegistry.registerBlock(force_field_projector, force_field_projector.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(force_charger, force_charger.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(configurator, configurator.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(iron_casing, iron_casing.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(steel_casing, steel_casing.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerTextures()
@@ -47,6 +55,8 @@ public class BlocksAFFS {
 		registerTexture(force_field_projector);
 		registerTexture(force_charger);
 		registerTexture(configurator);
+		registerTexture(iron_casing);
+		registerTexture(steel_casing);
 	}
 	
 	private static void registerTexture(Block block)

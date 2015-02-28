@@ -3,6 +3,7 @@ package net.fisty256.affs;
 import net.fisty256.affs.creativetabs.TabAFFS;
 import net.fisty256.affs.init.BlocksAFFS;
 import net.fisty256.affs.init.ItemsAFFS;
+import net.fisty256.affs.init.RecipesAFFS;
 import net.fisty256.affs.network.PacketHandler;
 import net.fisty256.affs.proxy.CommonProxy;
 import net.fisty256.affs.reference.ModReferences;
@@ -44,6 +45,11 @@ public class AFFS {
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
+		RecipesAFFS.registerOreDict();
+		RecipesAFFS.registerCrafting();
+		RecipesAFFS.registerSmelting();
+		RecipesAFFS.registerCustom();
+		
 		proxy.registerRenders();
 		
 		PacketHandler.init();
