@@ -1,3 +1,0 @@
-Alpha 1.0.0
-	- Added recipes for everything
-	- Added bunch of new items & blocks (crafting components)

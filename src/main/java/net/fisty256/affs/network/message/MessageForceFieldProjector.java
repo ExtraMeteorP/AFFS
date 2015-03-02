@@ -3,6 +3,7 @@ package net.fisty256.affs.network.message;
 import io.netty.buffer.ByteBuf;
 import net.fisty256.affs.tileentity.TileEntityForceFieldProjector;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -26,12 +27,12 @@ public class MessageForceFieldProjector implements IMessage, IMessageHandler<Mes
 		
 	}
 	
-	public MessageForceFieldProjector(TileEntityForceFieldProjector te)
+	public MessageForceFieldProjector(TileEntityForceFieldProjector te, ItemStack linkcardSlot)
 	{
 		x = te.getPos().getX();
 		y = te.getPos().getY();
 		z = te.getPos().getZ();
-		force = te.getForceAmount();
+		force = te.getForceAmount(linkcardSlot);
 		mode = te.mode;
 		forcefieldX = te.forcefieldX;
 		forcefieldY = te.forcefieldY;

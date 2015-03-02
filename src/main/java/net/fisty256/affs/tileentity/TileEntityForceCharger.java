@@ -22,7 +22,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-public class TileEntityForceCharger extends TileEntity implements IInventory, IUpdatePlayerListBox {
+public class TileEntityForceCharger extends TileEntityForceManager implements IInventory, IUpdatePlayerListBox {
 	public Container container;
 	protected ItemStack[] content = new ItemStack[2];
 	
@@ -36,14 +36,14 @@ public class TileEntityForceCharger extends TileEntity implements IInventory, IU
 		{
 			if (getStackInSlot(SLOT_ENERGYI) != null && getStackInSlot(SLOT_ENERGYI).getItem() instanceof ItemEnergyStorage)
 			{
-				if (canDecreaseBy(1))
+				if (canDecreaseBy(getStackInSlot(SLOT_LINKCARD), 1))
 				{
 					ItemStack stack = getStackInSlot(SLOT_ENERGYI);
 					ItemEnergyStorage item = (ItemEnergyStorage)stack.getItem();
 					if (item.getForceAmount(stack) < item.getMaxForce())
 					{
 						item.increaseForceAmount(stack, 1);
-						decreaseForceAmount(1);
+						decreaseForceAmount(getStackInSlot(SLOT_LINKCARD), 1);
 					}
 				}
 			}
@@ -205,56 +205,5 @@ public class TileEntityForceCharger extends TileEntity implements IInventory, IU
             	content[slotIndex] = ItemStack.loadItemStackFromNBT(tagCompound);
             }
         }
-	}
-	
-	/* Force util */
-	public int getForceAmount()
-	{
-		if (getStackInSlot(SLOT_LINKCARD) != null && getStackInSlot(SLOT_LINKCARD).getItem() == ItemsAFFS.link_card)
-		{
-			ItemStack slot = getStackInSlot(SLOT_LINKCARD);
-			if (slot.getTagCompound() != null)
-			{
-				NBTTagCompound nbt = slot.getTagCompound();
-				if (ForceDB.checkSource(nbt.getInteger("LinkID")))
-				{
-					return ForceDB.getSource(nbt.getInteger("LinkID"));
-				}
-			}
-		}
-		return 0;
-	}
-	
-	public void setForceAmount(int amount)
-	{
-		if (getStackInSlot(SLOT_LINKCARD) != null && getStackInSlot(SLOT_LINKCARD).getItem() == ItemsAFFS.link_card)
-		{
-			ItemStack slot = getStackInSlot(SLOT_LINKCARD);
-			if (slot.getTagCompound() != null)
-			{
-				NBTTagCompound nbt = slot.getTagCompound();
-				if (ForceDB.checkSource(nbt.getInteger("LinkID")))
-				{
-					ForceDB.setSource(nbt.getInteger("LinkID"), amount);
-				}
-			}
-		}
-	}
-	
-	public void decreaseForceAmount(int amount)
-	{
-		setForceAmount(getForceAmount()-amount);
-	}
-	
-	public void increaseForceAmount(int amount)
-	{
-		setForceAmount(getForceAmount()+amount);
-	}
-	
-	public boolean canDecreaseBy(int amount)
-	{
-		if (getForceAmount() >= amount)
-			return true;
-		return false;
 	}
 }

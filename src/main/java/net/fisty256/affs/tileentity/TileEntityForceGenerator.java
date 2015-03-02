@@ -19,7 +19,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-public class TileEntityForceGenerator extends TileEntity implements IInventory, IUpdatePlayerListBox {
+public class TileEntityForceGenerator extends TileEntitySyncedMachine implements IInventory, IUpdatePlayerListBox {
 
 	public Container container;
 	protected ItemStack[] content = new ItemStack[3];
@@ -175,6 +175,13 @@ public class TileEntityForceGenerator extends TileEntity implements IInventory, 
 			if (burnTime > 0)
 			{
 				burnTime--;
+			}
+			
+			if (forceStored > MAX_BUFFER)
+			{
+				forceStored = MAX_BUFFER;
+				ForceDB.setSource(storageID, forceStored);
+				sendUpdate = true;
 			}
 			
 			sendUpdate();

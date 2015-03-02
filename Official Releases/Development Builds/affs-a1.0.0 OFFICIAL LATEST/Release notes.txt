@@ -1,6 +1,0 @@
-Should be compatible with worlds made with dev1.0.0
-
-Official Recipe List: http://fisty256.clanweb.eu/affs/wiki/recipes/
-(you can also use NEI for recipes)
-
-BACKUP YOUR WORLDS BEFORE INSTALLING!

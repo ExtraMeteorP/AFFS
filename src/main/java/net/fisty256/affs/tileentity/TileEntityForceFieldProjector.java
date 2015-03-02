@@ -24,7 +24,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-public class TileEntityForceFieldProjector extends TileEntity implements IInventory, IUpdatePlayerListBox {
+public class TileEntityForceFieldProjector extends TileEntityForceManager implements IInventory, IUpdatePlayerListBox {
 
 	public Container container;
 	protected ItemStack[] content = new ItemStack[1];
@@ -74,7 +74,7 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 			sendUpdate = true;
 		}
 		
-		if (getForceAmount() != oldForceSent)
+		if (getForceAmount(getStackInSlot(SLOT_LINKCARD)) != oldForceSent)
 		{
 			sendUpdate = true;
 		}
@@ -91,9 +91,9 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 	
 	public void updateBody()
 	{
-		if (isRunning && getForceAmount() >= positionsX.length)
+		if (isRunning && getForceAmount(getStackInSlot(SLOT_LINKCARD)) >= positionsX.length)
 		{
-			decreaseForceAmount(positionsX.length);
+			decreaseForceAmount(getStackInSlot(SLOT_LINKCARD), positionsX.length);
 			if (positionsX != null)
 			{
 				tryPlaceBlocks();
@@ -194,10 +194,10 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
         if (sendUpdate && slowdownCounter >= 10)
         {
         	slowdownCounter = 0;
-        	oldForceSent = getForceAmount();
+        	oldForceSent = getForceAmount(getStackInSlot(SLOT_LINKCARD));
         	
         	this.markDirty();
-			PacketHandler.INSTANCE.sendToAllAround(new MessageForceFieldProjector(this), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(),
+			PacketHandler.INSTANCE.sendToAllAround(new MessageForceFieldProjector(this, getStackInSlot(SLOT_LINKCARD)), new NetworkRegistry.TargetPoint(this.worldObj.provider.getDimensionId(),
 					(double) this.getPos().getX(), (double) this.getPos().getY(), (double) this.getPos().getZ(), 128d));
             this.worldObj.notifyBlockOfStateChange(new BlockPos((double) this.getPos().getX(), (double) this.getPos().getY(), (double) this.getPos().getZ()), this.getBlockType());
             sendUpdate = false;
@@ -504,57 +504,6 @@ public class TileEntityForceFieldProjector extends TileEntity implements IInvent
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		return PacketHandler.INSTANCE.getPacketFrom(new MessageForceFieldProjector(this));
-	}
-	
-	/* Force util */
-	public int getForceAmount()
-	{
-		if (getStackInSlot(SLOT_LINKCARD) != null && getStackInSlot(SLOT_LINKCARD).getItem() == ItemsAFFS.link_card)
-		{
-			ItemStack slot = getStackInSlot(SLOT_LINKCARD);
-			if (slot.getTagCompound() != null)
-			{
-				NBTTagCompound nbt = slot.getTagCompound();
-				if (ForceDB.checkSource(nbt.getInteger("LinkID")))
-				{
-					return ForceDB.getSource(nbt.getInteger("LinkID"));
-				}
-			}
-		}
-		return 0;
-	}
-	
-	public void setForceAmount(int amount)
-	{
-		if (getStackInSlot(SLOT_LINKCARD) != null && getStackInSlot(SLOT_LINKCARD).getItem() == ItemsAFFS.link_card)
-		{
-			ItemStack slot = getStackInSlot(SLOT_LINKCARD);
-			if (slot.getTagCompound() != null)
-			{
-				NBTTagCompound nbt = slot.getTagCompound();
-				if (ForceDB.checkSource(nbt.getInteger("LinkID")))
-				{
-					ForceDB.setSource(nbt.getInteger("LinkID"), amount);
-				}
-			}
-		}
-	}
-	
-	public void decreaseForceAmount(int amount)
-	{
-		setForceAmount(getForceAmount()-amount);
-	}
-	
-	public void increaseForceAmount(int amount)
-	{
-		setForceAmount(getForceAmount()+amount);
-	}
-	
-	public boolean canDecreaseBy(int amount)
-	{
-		if (getForceAmount() >= amount)
-			return true;
-		return false;
+		return PacketHandler.INSTANCE.getPacketFrom(new MessageForceFieldProjector(this, getStackInSlot(SLOT_LINKCARD)));
 	}
 }
