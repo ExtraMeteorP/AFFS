@@ -1,8 +1,8 @@
-Alpha 1.0.0
-	- Added recipes for everything
-	- Added bunch of new items & blocks (crafting components)
-
 Alpha 1.0.1
 	- Code Optimizations
 	- Bugfix: Generator can generate over the max. energy limit
 	- Bugfix: Generator's GUI is not correctly synced with server
+
+Alpha 1.0.0
+	- Added recipes for everything
+	- Added bunch of new items & blocks (crafting components)

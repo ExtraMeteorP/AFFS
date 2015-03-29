@@ -17,5 +17,6 @@ tile.force_charger.name=Force Charger
 tile.configurator.name=Configurator
 tile.iron_casing.name=Iron Casing
 tile.steel_casing.name=Steel Casing
+tile.force_combiner.name=Force Combiner
 
 itemGroup.tab_affs=AFFS

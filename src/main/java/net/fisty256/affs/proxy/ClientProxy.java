@@ -2,10 +2,12 @@ package net.fisty256.affs.proxy;
 
 import net.fisty256.affs.container.ContainerConfigurator;
 import net.fisty256.affs.container.ContainerForceCharger;
+import net.fisty256.affs.container.ContainerForceCombiner;
 import net.fisty256.affs.container.ContainerForceFieldProjector;
 import net.fisty256.affs.container.ContainerForceGenerator;
 import net.fisty256.affs.gui.GuiConfigurator;
 import net.fisty256.affs.gui.GuiForceCharger;
+import net.fisty256.affs.gui.GuiForceCombiner;
 import net.fisty256.affs.gui.GuiForceFieldProjector;
 import net.fisty256.affs.gui.GuiForceGenerator;
 import net.fisty256.affs.gui.GuiInventoryCleaner;
@@ -15,6 +17,7 @@ import net.fisty256.affs.item.ItemInventoryCleaner;
 import net.fisty256.affs.reference.GUIReferences;
 import net.fisty256.affs.tileentity.TileEntityConfigurator;
 import net.fisty256.affs.tileentity.TileEntityForceCharger;
+import net.fisty256.affs.tileentity.TileEntityForceCombiner;
 import net.fisty256.affs.tileentity.TileEntityForceFieldProjector;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,6 +58,11 @@ public class ClientProxy extends CommonProxy {
 		{
 			TileEntityConfigurator fe = (TileEntityConfigurator)te;
 			return new GuiConfigurator(new ContainerConfigurator(player, fe), fe, player);
+		}
+		else if (ID == GUIReferences.ID_FORCE_COMBINER && te instanceof TileEntityForceCombiner)
+		{
+			TileEntityForceCombiner fe = (TileEntityForceCombiner)te;
+			return new GuiForceCombiner(new ContainerForceCombiner(player, fe), fe, player);
 		}
 		
 		return null;

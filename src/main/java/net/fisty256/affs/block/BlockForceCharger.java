@@ -49,7 +49,7 @@ public class BlockForceCharger extends BlockContainer {
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         dropInventory(worldIn, pos.getX(), pos.getY(), pos.getZ());
-        TileEntityForceFieldProjector te = (TileEntityForceFieldProjector)worldIn.getTileEntity(pos);
+        TileEntityForceCharger te = (TileEntityForceCharger)worldIn.getTileEntity(pos);
         super.breakBlock(worldIn, pos, state);
     }
 	

@@ -53,6 +53,17 @@ public class TileEntityForceGenerator extends TileEntitySyncedMachine implements
 	
 	public void update()
 	{
+		if (this.worldObj.isBlockPowered(this.getPos()))
+		{
+			turnedOn = false;
+			sendUpdate = true;
+		}
+		else
+		{
+			turnedOn = true;
+			sendUpdate = true;
+		}
+		
 		if (!worldObj.isRemote)
 		{
 			syncTimer++;

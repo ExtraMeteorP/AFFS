@@ -10,6 +10,7 @@ import net.fisty256.affs.reference.ModReferences;
 import net.fisty256.affs.reference.ProxyReferences;
 import net.fisty256.affs.tileentity.TileEntityConfigurator;
 import net.fisty256.affs.tileentity.TileEntityForceCharger;
+import net.fisty256.affs.tileentity.TileEntityForceCombiner;
 import net.fisty256.affs.tileentity.TileEntityForceFieldProjector;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
 import net.minecraft.creativetab.CreativeTabs;
@@ -60,5 +61,6 @@ public class AFFS {
 		GameRegistry.registerTileEntity(TileEntityForceFieldProjector.class, "TileEntityForceFieldProjector");
 		GameRegistry.registerTileEntity(TileEntityForceCharger.class, "TileEntityForceCharger");
 		GameRegistry.registerTileEntity(TileEntityConfigurator.class, "TileEntityConfigurator");
+		GameRegistry.registerTileEntity(TileEntityForceCombiner.class, "TileEntityForceCombiner");
 	}
 }
