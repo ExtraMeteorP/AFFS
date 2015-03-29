@@ -1,3 +1,7 @@
+Alpha 1.1.0
+	- Force Generator can be turned on/off using redstone signal
+	- Added new machine: Force Combiner (used to combine force from generators)
+
 Alpha 1.0.1
 	- Code Optimizations
 	- Bugfix: Generator can generate over the max. energy limit
