@@ -1,3 +1,12 @@
+Alpha 1.2.0
+	- Bugfix: Force Field Projector crashing in MP
+	- Added recipe: Force Combiner
+	- Added new machine: Area Protector (don't forget to put your whitelist card into it if you don't want to be dead!)
+	- Added new item: Radius upgrade
+	- Added new item: Whitelist Card
+	- New translation: Slovak
+	- Reworked GUIs
+
 Alpha 1.1.0
 	- Force Generator can be turned on/off using redstone signal
 	- Added new machine: Force Combiner (used to combine force from generators)
