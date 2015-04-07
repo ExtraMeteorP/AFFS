@@ -1,0 +1,25 @@
+item.link_card.name=Spojovacia karta
+item.inventory_cleaner.name=Čistič inventáru
+item.chip.name=Čip
+item.force_floodlight.name=Force Reflektor
+item.force_inductor_component.name=Force Inductor
+item.ingot_colorium.name=Coloriumový ingot
+item.ingot_steel.name=Oceľový ingot
+item.ingot_iron_triple.name=Trojitý železný ingot
+item.ingot_steel_triple.name=Trojitý oceľový ingot
+item.wireless_force_component.name=Bezdrátový Force komponent
+item.advanced_wireless_force_component.name=Pokročilý bezdrátový Force komponent
+item.whitelist_card.name=Karta bielej listiny
+item.radius_upgrade.name=Karta na dosah
+
+tile.force_generator.name=Force generátor
+tile.force_field.name=Silové pole
+tile.force_field_projector.name=Projektor silového poľa
+tile.force_charger.name=Force nabíjač
+tile.configurator.name=Konfigurátor
+tile.iron_casing.name=Železný obal
+tile.steel_casing.name=Oceľový obal
+tile.force_combiner.name=Forcový spojovač
+tile.area_protector.name=Ochraňovač priestoru
+
+itemGroup.tab_affs=AFFS

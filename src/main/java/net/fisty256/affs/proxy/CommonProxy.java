@@ -1,5 +1,6 @@
 package net.fisty256.affs.proxy;
 
+import net.fisty256.affs.container.ContainerAreaProtector;
 import net.fisty256.affs.container.ContainerConfigurator;
 import net.fisty256.affs.container.ContainerForceCharger;
 import net.fisty256.affs.container.ContainerForceCombiner;
@@ -7,6 +8,7 @@ import net.fisty256.affs.container.ContainerForceFieldProjector;
 import net.fisty256.affs.container.ContainerForceGenerator;
 import net.fisty256.affs.item.ItemInventoryCleaner;
 import net.fisty256.affs.reference.GUIReferences;
+import net.fisty256.affs.tileentity.TileEntityAreaProtector;
 import net.fisty256.affs.tileentity.TileEntityConfigurator;
 import net.fisty256.affs.tileentity.TileEntityForceCharger;
 import net.fisty256.affs.tileentity.TileEntityForceCombiner;
@@ -59,7 +61,12 @@ public class CommonProxy implements IGuiHandler {
 			fe.container = new ContainerForceCombiner(player, fe);
 			return fe.container;
 		}
-			
+		else if (ID == GUIReferences.ID_AREA_PROTECTOR && te instanceof TileEntityAreaProtector)
+		{
+			TileEntityAreaProtector fe = (TileEntityAreaProtector)te;
+			fe.container = new ContainerAreaProtector(player, fe);
+			return fe.container;
+		}
 		return null;
 	}
 

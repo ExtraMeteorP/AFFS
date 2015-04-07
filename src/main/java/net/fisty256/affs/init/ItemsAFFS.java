@@ -5,6 +5,7 @@ import com.sun.org.apache.xml.internal.security.signature.reference.ReferenceSub
 import net.fisty256.affs.AFFS;
 import net.fisty256.affs.item.ItemInventoryCleaner;
 import net.fisty256.affs.item.ItemLinkCard;
+import net.fisty256.affs.item.ItemWhitelistCard;
 import net.fisty256.affs.reference.ModReferences;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -15,8 +16,11 @@ public class ItemsAFFS {
 	
 	public static Item link_card;
 	public static Item inventory_cleaner;
+	public static Item whitelist_card;
 	
-	/* Crafting ings */
+	public static Item radius_upgrade;
+	
+	/* Crafting ingredients */
 	public static Item chip, force_floodlight, force_inductor_component, ingot_colorium, ingot_steel, ingot_iron_triple, ingot_steel_triple, wireless_force_component, advanced_wireless_force_component;
 	
 	public static void init()
@@ -33,6 +37,8 @@ public class ItemsAFFS {
 		ingot_steel_triple = new Item().setUnlocalizedName("ingot_steel_triple").setCreativeTab(AFFS.tab_affs);
 		wireless_force_component = new Item().setUnlocalizedName("wireless_force_component").setCreativeTab(AFFS.tab_affs);
 		advanced_wireless_force_component = new Item().setUnlocalizedName("advanced_wireless_force_component").setCreativeTab(AFFS.tab_affs);
+		radius_upgrade = new Item().setUnlocalizedName("radius_upgrade").setCreativeTab(AFFS.tab_affs);
+		whitelist_card = new ItemWhitelistCard().setUnlocalizedName("whitelist_card").setCreativeTab(AFFS.tab_affs);
 	}
 	
 	public static void register()
@@ -48,6 +54,8 @@ public class ItemsAFFS {
 		GameRegistry.registerItem(ingot_steel_triple, ingot_steel_triple.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(wireless_force_component, wireless_force_component.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(advanced_wireless_force_component, advanced_wireless_force_component.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(radius_upgrade, radius_upgrade.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(whitelist_card, whitelist_card.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerTextures()
@@ -63,6 +71,8 @@ public class ItemsAFFS {
 		registerTexture(ingot_steel_triple);
 		registerTexture(wireless_force_component);
 		registerTexture(advanced_wireless_force_component);
+		registerTexture(radius_upgrade);
+		registerTexture(whitelist_card);
 	}
 	
 	private static void registerTexture(Item item)

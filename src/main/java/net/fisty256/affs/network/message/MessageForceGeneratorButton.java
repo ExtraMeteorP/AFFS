@@ -2,12 +2,14 @@ package net.fisty256.affs.network.message;
 
 import io.netty.buffer.ByteBuf;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.server.FMLServerHandler;
 
 public class MessageForceGeneratorButton implements IMessage, IMessageHandler<MessageForceGeneratorButton, IMessage> {
 	int x, y, z;
@@ -31,7 +33,15 @@ public class MessageForceGeneratorButton implements IMessage, IMessageHandler<Me
 	@Override
 	public IMessage onMessage(MessageForceGeneratorButton msg, MessageContext ctx)
 	{
-		TileEntity te = FMLClientHandler.instance().getServer().worldServerForDimension(msg.dim).getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
+		TileEntity te;
+		if (MinecraftServer.getServer().isDedicatedServer())
+		{
+			te = FMLServerHandler.instance().getServer().worldServerForDimension(msg.dim).getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
+		}
+		else
+		{
+			te = FMLClientHandler.instance().getServer().worldServerForDimension(msg.dim).getTileEntity(new BlockPos(msg.x, msg.y, msg.z));
+		}
 		
 		if (te instanceof TileEntityForceGenerator)
 		{

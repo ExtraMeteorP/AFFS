@@ -3,12 +3,14 @@ package net.fisty256.affs.network.message;
 import io.netty.buffer.ByteBuf;
 import net.fisty256.affs.tileentity.TileEntityForceGenerator;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.server.FMLServerHandler;
 
 public class MessageForceGenerator implements IMessage, IMessageHandler<MessageForceGenerator, IMessage> {
 	private int x, y, z;

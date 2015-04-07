@@ -9,6 +9,8 @@ item.ingot_iron_triple.name=Triple Iron Ingot
 item.ingot_steel_triple.name=Triple Steel Ingot
 item.wireless_force_component.name=Wireless Force Component
 item.advanced_wireless_force_component.name=Advanced Wireless Force Component
+item.whitelist_card.name=Whitelist Card
+item.radius_upgrade.name=Radius Upgrade
 
 tile.force_generator.name=Force Generator
 tile.force_field.name=Force Field
@@ -18,5 +20,6 @@ tile.configurator.name=Configurator
 tile.iron_casing.name=Iron Casing
 tile.steel_casing.name=Steel Casing
 tile.force_combiner.name=Force Combiner
+tile.area_protector.name=Area Protector
 
 itemGroup.tab_affs=AFFS

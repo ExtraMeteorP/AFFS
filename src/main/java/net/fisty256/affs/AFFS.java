@@ -8,6 +8,7 @@ import net.fisty256.affs.network.PacketHandler;
 import net.fisty256.affs.proxy.CommonProxy;
 import net.fisty256.affs.reference.ModReferences;
 import net.fisty256.affs.reference.ProxyReferences;
+import net.fisty256.affs.tileentity.TileEntityAreaProtector;
 import net.fisty256.affs.tileentity.TileEntityConfigurator;
 import net.fisty256.affs.tileentity.TileEntityForceCharger;
 import net.fisty256.affs.tileentity.TileEntityForceCombiner;
@@ -62,5 +63,6 @@ public class AFFS {
 		GameRegistry.registerTileEntity(TileEntityForceCharger.class, "TileEntityForceCharger");
 		GameRegistry.registerTileEntity(TileEntityConfigurator.class, "TileEntityConfigurator");
 		GameRegistry.registerTileEntity(TileEntityForceCombiner.class, "TileEntityForceCombiner");
+		GameRegistry.registerTileEntity(TileEntityAreaProtector.class, "TileEntityAreaProtector");
 	}
 }

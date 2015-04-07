@@ -1,6 +1,7 @@
 package net.fisty256.affs.init;
 
 import net.fisty256.affs.AFFS;
+import net.fisty256.affs.block.BlockAreaProtector;
 import net.fisty256.affs.block.BlockConfigurator;
 import net.fisty256.affs.block.BlockForceCharger;
 import net.fisty256.affs.block.BlockForceCombiner;
@@ -25,6 +26,7 @@ public class BlocksAFFS {
 	public static Block force_charger;
 	public static Block configurator;
 	public static Block force_combiner;
+	public static Block area_protector;
 	
 	public static Block iron_casing, steel_casing;
 	
@@ -38,6 +40,7 @@ public class BlocksAFFS {
 		iron_casing = new BlockIron().setUnlocalizedName("iron_casing").setCreativeTab(AFFS.tab_affs);
 		steel_casing = new BlockSteel().setUnlocalizedName("steel_casing").setCreativeTab(AFFS.tab_affs);
 		force_combiner = new BlockForceCombiner(Material.rock).setUnlocalizedName("force_combiner").setCreativeTab(AFFS.tab_affs);
+		area_protector = new BlockAreaProtector(Material.rock).setUnlocalizedName("area_protector").setCreativeTab(AFFS.tab_affs);
 	}
 	
 	public static void register()
@@ -50,6 +53,7 @@ public class BlocksAFFS {
 		GameRegistry.registerBlock(iron_casing, iron_casing.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(steel_casing, steel_casing.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(force_combiner, force_combiner.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(area_protector, area_protector.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerTextures()
@@ -62,6 +66,7 @@ public class BlocksAFFS {
 		registerTexture(iron_casing);
 		registerTexture(steel_casing);
 		registerTexture(force_combiner);
+		registerTexture(area_protector);
 	}
 	
 	private static void registerTexture(Block block)
