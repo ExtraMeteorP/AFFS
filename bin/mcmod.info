@@ -1,0 +1,16 @@
+[
+{
+  "modid": "affs",
+  "name": "AFFS",
+  "description": "Another Force Field System Mod",
+  "version": "a1.1.0",
+  "mcversion": "1.8",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Fisty256"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

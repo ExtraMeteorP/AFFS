@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GuiForceFieldProjector extends InventoryEffectRenderer {
 	private final ResourceLocation backgroundTexture;
@@ -92,6 +94,7 @@ public class GuiForceFieldProjector extends InventoryEffectRenderer {
 		this.buttonList.add(new GuiButton(17, guiLeft+108, guiTop+91, 10, 10, "+"));	this.buttonList.add(new GuiButton(18, guiLeft+120, guiTop+91, 10, 10, "-")); //Down
 	}
 	
+	@SideOnly(Side.CLIENT)
 	protected void actionPerformed(GuiButton guibutton)
 	{
         PacketHandler.INSTANCE.sendToServer(new MessageForceFieldProjectorButton(te.getPos(), player.dimension, guibutton.id));

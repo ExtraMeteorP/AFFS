@@ -79,7 +79,7 @@ public class TileEntityForceFieldProjector extends TileEntityForceManager implem
 			sendUpdate = true;
 		}
 		
-		if (this.worldObj.isBlockPowered(new BlockPos(this.getPos())))
+		if (getStackInSlot(SLOT_LINKCARD) != null && this.worldObj.isBlockPowered(new BlockPos(this.getPos())))
 		{
 			this.isRunning = true;
 		}
@@ -91,20 +91,27 @@ public class TileEntityForceFieldProjector extends TileEntityForceManager implem
 	
 	public void updateBody()
 	{
-		if (isRunning && getForceAmount(getStackInSlot(SLOT_LINKCARD)) >= positionsX.length)
+		try
 		{
-			decreaseForceAmount(getStackInSlot(SLOT_LINKCARD), positionsX.length);
-			if (positionsX != null)
+			if (isRunning && getForceAmount(getStackInSlot(SLOT_LINKCARD)) >= positionsX.length)
 			{
-				tryPlaceBlocks();
+				decreaseForceAmount(getStackInSlot(SLOT_LINKCARD), positionsX.length);
+				if (positionsX != null)
+				{
+					tryPlaceBlocks();
+				}
+			}
+			else
+			{
+				if (positionsX != null)
+				{
+					removePlacedBlocks();
+				}
 			}
 		}
-		else
+		catch (Exception e)
 		{
-			if (positionsX != null)
-			{
-				removePlacedBlocks();
-			}
+			this.isRunning = false;
 		}
 	}
 	
@@ -118,7 +125,7 @@ public class TileEntityForceFieldProjector extends TileEntityForceManager implem
 		}
 	}
 	
-	private void removePlacedBlocks()
+	public void removePlacedBlocks()
 	{
 		for (int i = 0; i < originalPositionsX.length; i++)
 		{

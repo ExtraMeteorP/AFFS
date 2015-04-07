@@ -57,6 +57,11 @@ public class BlockForceFieldProjector extends BlockContainer {
     {
         dropInventory(worldIn, pos.getX(), pos.getY(), pos.getZ());
         TileEntityForceFieldProjector te = (TileEntityForceFieldProjector)worldIn.getTileEntity(pos);
+        if (te.isRunning)
+        {
+        	te.isRunning = false;
+        	te.removePlacedBlocks();
+        }
         super.breakBlock(worldIn, pos, state);
     }
 	

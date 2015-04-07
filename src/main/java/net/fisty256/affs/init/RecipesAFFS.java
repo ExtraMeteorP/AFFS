@@ -87,6 +87,11 @@ public class RecipesAFFS {
 			'M', BlocksAFFS.iron_casing, 'C', ItemsAFFS.chip, 'W', ItemsAFFS.advanced_wireless_force_component, 'I', "ingotColorium", 'F', ItemsAFFS.force_floodlight
 		}));
 		
+		GameRegistry.addShapedRecipe(new ItemStack(BlocksAFFS.force_combiner), new Object[]{
+			"FAF", "HCH", " H ",
+			'C', BlocksAFFS.steel_casing, 'F', ItemsAFFS.wireless_force_component, 'A', ItemsAFFS.advanced_wireless_force_component, 'H', ItemsAFFS.chip
+		});
+		
 		GameRegistry.addShapelessRecipe(new ItemStack(ItemsAFFS.link_card), Items.paper, Items.redstone, ItemsAFFS.chip);
 		GameRegistry.addShapelessRecipe(new ItemStack(ItemsAFFS.ingot_iron_triple), Items.iron_ingot, Items.iron_ingot, Items.iron_ingot);
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemsAFFS.ingot_steel_triple, "ingotSteel", "ingotSteel", "ingotSteel"));
